@@ -1,3 +1,5 @@
+# Publishes Vite `dist` via GitHub Actions. Pages must use Source: GitHub Actions
+# (not "Deploy from branch /"), or visitors get unbuilt HTML referencing /src/main.ts.
 name: Deploy to GitHub Pages
 
 on:
