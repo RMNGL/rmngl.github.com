@@ -5,190 +5,140 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta
       name="description"
-      content="RMNGL — Remingle. Ideas, products, and experiences remixed into something new."
+      content="RMNGL — Remingle. Short name, long memory. A holding company for brand systems, product surfaces, commerce, content and generative production. Seoul."
     />
     <title>RMNGL</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;1,9..40,400&family=JetBrains+Mono:wght@400;600&family=UnifrakturMaguntia&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=JetBrains+Mono:wght@400;600&family=Space+Grotesk:wght@700&family=UnifrakturMaguntia&display=swap"
       rel="stylesheet"
     />
+    <link rel="stylesheet" href="/src/style.css" />
   </head>
   <body>
-    <a class="skip-link" href="#main">본문으로 건너뛰기</a>
+    <a class="skip-link" href="#services">본문으로 건너뛰기</a>
 
+    <canvas id="ascii-backdrop" class="ascii-backdrop" aria-hidden="true"></canvas>
+    <div class="scrim" aria-hidden="true"></div>
     <div class="grain" aria-hidden="true"></div>
     <div class="scanlines" aria-hidden="true"></div>
 
-    <div id="cursor-dot" class="cursor-dot" aria-hidden="true"></div>
-    <div id="cursor-ring" class="cursor-ring" aria-hidden="true"></div>
-
     <header class="site-header">
-      <a class="logo" href="/" aria-label="RMNGL home">
-        <span class="logo-ascii">RMNGL</span>
+      <!-- Wordmark lockup: the mark, then the name. The mark is the name's
+           meaning drawn — two circles overlapping, the overlap itself inked in,
+           because "remingle" is two things sharing a region. Decorative: the
+           word carries the link, so the link's accessible name is still exactly
+           "RMNGL". -->
+      <a class="logo" href="/">
+        <svg class="logo__mark" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <circle cx="8.6" cy="12" r="5.6" />
+          <circle cx="15.4" cy="12" r="5.6" />
+          <!-- The lens: the exact intersection of the two circles above, so its
+               arcs land on theirs. Endpoints are the circles' own crossings. -->
+          <path class="logo__lens" d="M12 7.55A5.6 5.6 0 0 1 12 16.45A5.6 5.6 0 0 1 12 7.55Z" />
+        </svg>
+        RMNGL
       </a>
-      <nav class="site-nav" aria-label="Primary">
-        <a href="#about">About</a>
-        <a href="#work">Work</a>
-        <a href="#contact">Contact</a>
+      <nav class="site-nav mono" aria-label="Primary">
+        <a href="#services">services</a>
+        <a href="#contact">contact</a>
       </nav>
+      <!-- Corner mark: the wordmark's comma, drawn bare, three times, stepping
+           downhill. The run is what keeps it punctuation rather than three
+           upright bars. Decorative — the wordmark carries the link. -->
+      <span class="logo-badge" aria-hidden="true">
+        <svg class="logo-badge__mark" viewBox="0 0 35 29" aria-hidden="true">
+          <defs>
+            <path id="rmngl-comma" d="M10.25 11.75A4.6 4.6 0 1 1 13.5 13.1C13.9 16.4 9.6 19.8 4.8 22.6 6.6 17.6 8.2 14.2 10.25 11.75Z" />
+          </defs>
+          <use href="#rmngl-comma" transform="scale(0.72)" />
+          <use href="#rmngl-comma" transform="translate(9 5) scale(0.72)" />
+          <use href="#rmngl-comma" transform="translate(18 10) scale(0.72)" />
+        </svg>
+      </span>
     </header>
 
-    <main id="main">
-      <div class="immersive">
-        <section class="hero-pin" aria-label="Introduction">
-          <div class="hero-stage" id="hero-stage">
-            <canvas id="ascii-canvas" class="hero-canvas" aria-hidden="true"></canvas>
+    <main>
+      <section id="services" class="index-zone" aria-label="Services">
+        <!-- Page h1 kept for the outline; the ASCII backdrop carries the wordmark. -->
+        <h1 class="visually-hidden">RMNGL</h1>
 
-            <p class="sticker sticker-a mono">seoul · remixed</p>
-            <p class="sticker sticker-b">★ do not resize me ★</p>
-            <p class="sticker sticker-c mono">v1.0.0-beta-feelings</p>
-
-            <div class="hero-type" id="hero-type">
-              <p class="hero-whisper">
-                ciao, we are <span class="hero-whisper-fraktur">Remingle</span> but everyone
-                types
-              </p>
-              <h1 class="hero-mega" aria-label="RMNGL">
-                <span class="hero-mega-line hero-mega-rmngl" data-scroll-transform>RMNGL</span>
-                <span class="hero-mega-line hero-mega-remingle" data-scroll-transform
-                  >Remingle</span
-                >
-              </h1>
-              <p class="hero-babble">
-                we take the leftover tabs, the half-dead decks, the brand that almost worked —
-                <strong>shake</strong>, pour, serve again. sometimes it explodes. sometimes it’s
-                genius. we’re fine with both.
-              </p>
-            </div>
-
-            <div class="hero-scroll-hint" aria-hidden="true">
-              <span class="mono">keep scrolling or else</span>
-              <span class="hero-scroll-line"></span>
-            </div>
-          </div>
-        </section>
-
-        <div class="marquee marquee-fast" aria-hidden="true">
-          <div class="marquee-track">
-            <span>REMINGLE REMINGLE REMINGLE REMINGLE </span>
-            <span>REMINGLE REMINGLE REMINGLE REMINGLE </span>
-          </div>
-        </div>
-
-        <section id="about" class="longread" aria-labelledby="longread-title">
-          <h2 id="longread-title" class="visually-hidden">About RMNGL</h2>
-
-          <p class="longread-line longread-line--1 reveal" data-scroll-slow>
-            <span class="longread-fraktur">Short</span> name.
-          </p>
-          <p class="longread-line longread-line--2 reveal" data-scroll-slow>
-            <span class="longread-huge">LONG</span> memory.
-          </p>
-
-          <div class="longread-body">
-            <p class="longread-para reveal">
-              <strong>RMNGL</strong> is what happens when you say Remingle too fast in a meeting
-              and nobody corrects you. Good. The company kept the typo energy on purpose.
-            </p>
-            <p class="longread-para longread-para--offset reveal">
-              We build products and surfaces where engineering and art direction sit at the same
-              table and occasionally fight over the aux cord. Websites that feel like events.
-              Tools that don’t look like every other SaaS funeral.
-            </p>
-            <p class="longread-para longread-para--wide reveal">
-              We are not Tommy Cash. We are a company. But we borrowed their scroll addiction and
-              their refusal to be boring — then we promised HR we’d still have a contact email.
-            </p>
-          </div>
-
-          <ul class="chaos-tags reveal" aria-label="Quick facts">
-            <li class="mono">product</li>
-            <li class="mono">brand</li>
-            <li class="mono">web</li>
-            <li class="mono">generative</li>
-            <li class="mono">seoul</li>
-          </ul>
-        </section>
-
-        <div class="marquee marquee-slow marquee-pink" aria-hidden="true">
-          <div class="marquee-track marquee-track-reverse">
-            <span>★ RMNGL ★ MIX AGAIN ★ RMNGL ★ MIX AGAIN ★ </span>
-            <span>★ RMNGL ★ MIX AGAIN ★ RMNGL ★ MIX AGAIN ★ </span>
-          </div>
-        </div>
-
-        <section class="section-ascii-band" aria-hidden="true">
-          <pre class="ascii-band mono" id="ascii-band"></pre>
-        </section>
-
-        <section class="play-strip" aria-label="Interactive strip">
-          <p class="play-strip-label mono">drag the nonsense →</p>
-          <div class="play-rail" id="play-rail" tabindex="0">
-            <div class="play-track" id="play-track">
-              <span class="play-chip">ASCII</span>
-              <span class="play-chip play-chip--pink">GLITCH</span>
-              <span class="play-chip">SCROLL</span>
-              <span class="play-chip play-chip--cyan">REMIX</span>
-              <span class="play-chip">RMNGL</span>
-              <span class="play-chip play-chip--pink">AGAIN</span>
-            </div>
-          </div>
-        </section>
-      </div>
-
-      <div class="corporate" id="work">
-        <section class="section section-work">
-          <div class="container">
-            <p class="section-label mono reveal">// work — the calm part (30%)</p>
-            <h2 class="section-headline reveal">Selected remixes</h2>
-            <p class="section-sub reveal">
-              Real case studies go here. For now, three honest placeholders.
-            </p>
-            <ul class="work-grid">
-              <li class="work-card reveal">
-                <span class="work-index mono">01</span>
-                <h3>Identity systems</h3>
-                <p>Names and motion that work on a billboard and in a terminal.</p>
-              </li>
-              <li class="work-card reveal">
-                <span class="work-index mono">02</span>
-                <h3>Product surfaces</h3>
-                <p>Loud where it’s allowed. Legible where it’s required.</p>
-              </li>
-              <li class="work-card reveal">
-                <span class="work-index mono">03</span>
-                <h3>Generative moments</h3>
-                <p>One scene you remember — not noise on every pixel.</p>
-              </li>
-            </ul>
-          </div>
-        </section>
-
-        <section id="contact" class="section section-contact">
-          <div class="container reveal">
-            <p class="section-label mono">// contact</p>
-            <h2 class="section-headline contact-headline">Let’s remingle.</h2>
-            <p class="contact-copy">
-              New product, rebrand, or “we need a site that doesn’t look like everyone else.”
-            </p>
-            <div class="contact-actions">
-              <a class="btn btn-primary" href="mailto:hello@rmngl.com">hello@rmngl.com</a>
-              <a class="btn btn-ghost" href="https://github.com/rmngl" rel="noopener noreferrer"
-                >GitHub</a
+        <ol class="index-list">
+          <li class="index-row" data-ticker>
+            <a class="index-hit" href="#contact">
+              <span class="index-left" aria-hidden="true">#<br />1</span>
+              <span class="index-name"><span class="index-ticker">Brand systems</span></span>
+            </a>
+          </li>
+          <li class="index-row" data-ticker>
+            <a class="index-hit" href="#contact">
+              <span class="index-left" aria-hidden="true">#<br />2</span>
+              <span class="index-name"><span class="index-ticker">Product surfaces</span></span>
+            </a>
+          </li>
+          <li class="index-row" data-ticker>
+            <a class="index-hit" href="#contact">
+              <span class="index-left" aria-hidden="true">#<br />3</span>
+              <span class="index-name"><span class="index-ticker">Commerce &amp; retail</span></span>
+            </a>
+          </li>
+          <li class="index-row" data-ticker>
+            <a class="index-hit" href="#contact">
+              <span class="index-left" aria-hidden="true">#<br />4</span>
+              <span class="index-name"><span class="index-ticker">Content &amp; IP</span></span>
+            </a>
+          </li>
+          <li class="index-row" data-ticker>
+            <a class="index-hit" href="#contact">
+              <span class="index-left" aria-hidden="true">#<br />5</span>
+              <span class="index-name">
+                <span class="index-ticker">Interactive &amp; generative production</span>
+              </span>
+            </a>
+          </li>
+          <li class="index-row" data-ticker>
+            <a class="index-hit" href="#contact">
+              <span class="index-left" aria-hidden="true">#<br />6</span>
+              <span class="index-name"><span class="index-ticker">Venture studio</span></span>
+            </a>
+          </li>
+          <li class="index-row index-row--tbd" data-ticker>
+            <div class="index-hit">
+              <span class="index-left" aria-hidden="true">#<br />7</span>
+              <span class="index-name"
+                ><span class="index-ticker">Next thing</span
+                ><span class="visually-hidden"> — tbd</span></span
               >
             </div>
-          </div>
-        </section>
-      </div>
+          </li>
+          <li class="index-row index-row--descender" id="contact" data-ticker>
+            <a class="index-hit" href="mailto:hello@rmngl.com">
+              <span class="index-left index-left--mark" aria-hidden="true">,,,</span>
+              <span class="index-name index-name--mark"
+                ><span class="index-ticker">hello@rmngl.com</span></span
+              >
+            </a>
+          </li>
+          <!-- mschf's notation for a service that has not opened: the number is
+               real, the name is not. The run is long enough to be cut by its
+               column, and because every glyph is identical the character ticker
+               steps it invisibly — the row reads as still. No link, for the same
+               reason #7 holds none. -->
+          <li class="index-row index-row--unnamed" data-ticker>
+            <div class="index-hit">
+              <span class="index-left" aria-hidden="true">#<br />8</span>
+              <span class="index-name"
+                ><span class="index-ticker" aria-hidden="true"
+                  >????????????????????????????????</span
+                ><span class="visually-hidden">Unannounced</span></span
+              >
+            </div>
+          </li>
+        </ol>
+      </section>
     </main>
 
-    <footer class="site-footer">
-      <p class="mono">© <span id="year"></span> RMNGL · Remingle</p>
-      <p class="footer-tag">70% chaos, 30% inbox</p>
-    </footer>
-
-    <script type="module" src="/src/main.ts"></script>
+    <script type="module" src="/src/main.js"></script>
   </body>
 </html>
