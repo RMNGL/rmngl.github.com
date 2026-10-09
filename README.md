@@ -170,6 +170,17 @@ Pages serves the branch itself.
 In GitHub **Settings → Pages**, set **Source** to **Deploy from a branch**, branch `main`, folder
 `/ (root)`. That is the entire pipeline: the files in this repository *are* the site.
 
+`.nojekyll` in the root is what makes that literal. Without it Pages runs the branch through Jekyll
+first, and a static site has no reason to be processed by a blog generator — the marker says "serve
+these files as they are".
+
+### If a push changes nothing
+
+Check **Settings → Pages → Source** first. If it still says **GitHub Actions**, nothing is deployed:
+this repository has no workflow left to run, so the push is silent and the site keeps serving the last
+artifact the old workflow built. Switching the source to **Deploy from a branch** publishes the
+repository as it stands on the next build.
+
 ### Custom domain (`rmngl.com`)
 
 `CNAME` in the repository root holds the domain, which is what branch-based Pages reads. Set the custom
