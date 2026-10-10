@@ -99,7 +99,9 @@ link, so the header still has a single home link (the wordmark); the nav takes t
 `margin-left: auto`, which is what keeps the mark pinned to the right edge.
 The mark is `clamp(1.75rem, 6vw, 2.75rem)` wide — the value that keeps a 320px header from overflowing —
 and the SVG's own 35:29 box sets its height, so there is no square to letterbox. `fill: currentColor`
-lets the hover move the whole mark to yellow with one declaration.
+lets the hover move the whole mark to yellow with one declaration. That hover stays, even though the
+badge holds no link and takes no focus: it is the wordmark's punctuation, so it answers to the pointer
+the way the word does. Hover-only is the trade — a keyboard user never sees it.
 
 ## Editing the service index
 
@@ -110,7 +112,9 @@ marquee (`src/site-index.js`) — the row keeps `#N` fixed and steps the name on
 
 The list is three kinds of row: a named row that links (`#1` leaves the site), the `index-row--tbd` row
 for work that has not started, and the unnamed run that closes the list. The contact row is the one
-without a number.
+without a number. A row links when it has somewhere to go: `#1` opens the blog in a new tab
+(`target="_blank" rel="noopener"`, with a `visually-hidden` "opens in a new tab" so its name says so),
+the contact row mails, and a row with no destination — `#2` and the run — holds none.
 
 `#N` is a stack, not a string — `#<br />1`, the way mschf writes its gutter — and the pair runs at 40%
 of the row size (`.index-left { font-size: 0.4em; line-height: 1.125 }`: 26px against 65px on their
@@ -156,7 +160,9 @@ opened — the number is real and the name is not. Each row is a run of `?` long
 column, and because every glyph is identical the character ticker steps it invisibly — which is why they
 read as still rather than animated. They hold no link, for the same reason `#2` holds none. The run is
 `aria-hidden` and each row carries a `visually-hidden` "Unannounced", so a screen reader gets a label
-instead of thirty-two question marks; trim or lengthen the run to taste, the column clips it.
+instead of thirty-two question marks; trim or lengthen the run to taste, the column clips it. When a
+service opens, the row stops being notation: the run becomes the name, `index-row--unnamed` comes off,
+and the row takes a link if it has one — the shape `#1` already has.
 
 `index-row--unnamed` is those rows' one rule, and it only bites on the wrapping branch: a run of identical
 glyphs gains nothing from wrapping, and it would leave a line carrying a single `?`, so the row keeps

@@ -206,6 +206,9 @@ body {
   fill: currentColor;
 }
 
+/* The badge keeps a hover even though it holds no link and takes no focus: it is
+   the wordmark's punctuation, so it answers to the pointer the way the word does.
+   Hover-only is the trade — a keyboard user never sees it. */
 .logo-badge:hover {
   color: var(--yellow);
 }
