@@ -300,9 +300,10 @@ main {
   color: var(--yellow);
 }
 
-/* The same row's name is the index's one link, so the address takes the yellow of
-   the mark beside it. Hover still inverts it to white with the rest of the rows:
-   `.index-hit:hover .index-name` is the more specific rule. */
+/* The same row's name is the list's contact rather than one of its services, so
+   the address takes the yellow of the mark beside it. Hover still inverts it to
+   white with the rest of the rows: `.index-hit:hover .index-name` is the more
+   specific rule. */
 .index-name--mark {
   color: var(--yellow);
 }
@@ -332,9 +333,9 @@ main {
 
 /* The tight line box leaves nothing under the baseline, and the contact row is
    the only one carrying a descender (the "@" in hello@rmngl.com, 15px deep at
-   84px). Give just that row room to clear its rule instead of loosening all
-   nine — the row keeps its padding: 0 top so the rhythm is unbroken. The hook is
-   a class, not `:last-child`: the "?" row follows the contact row. */
+   84px). Give just that row room to clear its rule instead of loosening every
+   row — the row keeps its padding: 0 top so the rhythm is unbroken. The hook is
+   a class, not `:last-child`: the "?" rows follow the contact row. */
 .index-row--descender .index-hit {
   padding-bottom: 0.15em;
 }

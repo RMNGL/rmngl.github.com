@@ -19,7 +19,7 @@ the tab is the whole development loop.
 
 | Piece | File | Notes |
 | --- | --- | --- |
-| Page markup | `index.html` | `#services` index (rows `#1`–`#8`), fixed header, canvas + overlay layers |
+| Page markup | `index.html` | `#services` index (rows `#1`–`#10`), fixed header, canvas + overlay layers |
 | ASCII backdrop | `src/ascii-backdrop.js` | Full-viewport character grid; cycling scenes (below) |
 | Index marquee | `src/site-index.js` | Character-stepped ticker for over-wide row names |
 | Styles | `src/style.css` | Layer stack, grid rows, responsive/reduced-motion branches |
@@ -108,6 +108,10 @@ The holding-company index lives in `index.html` (`#services` → `.index-list`).
 (`.index-name` > `.index-ticker`). Rows whose name is wider than its column get a character-stepped
 marquee (`src/site-index.js`) — the row keeps `#N` fixed and steps the name only.
 
+The list is three kinds of row: a named row that links (`#1` leaves the site), the `index-row--tbd` row
+for work that has not started, and the unnamed run that closes the list. The contact row is the one
+without a number.
+
 `#N` is a stack, not a string — `#<br />1`, the way mschf writes its gutter — and the pair runs at 40%
 of the row size (`.index-left { font-size: 0.4em; line-height: 1.125 }`: 26px against 65px on their
 desktop). Those two numbers are not free to edit: `0.4em × 1.125 = 0.45em` a line, so the two lines fill
@@ -135,26 +139,26 @@ Rows are deliberately tight: `.index-hit` carries `padding: 0` and `line-height:
   breathe vertically.
 - The row rule sits at the bottom of that box, and JetBrains Mono's `@` descends 15px at 84px — so the
   contact row is the only one that needs room, and it alone carries `index-row--descender`
-  (`padding-bottom: 0.15em`). A class, not `:last-child`, because the `?` row comes after it. Adding a
+  (`padding-bottom: 0.15em`). A class, not `:last-child`, because the `?` rows come after it. Adding a
   descender to any other row means giving that row the same class, or the tail will cross the rule.
 
 The `index-row--tbd` row renders red over a diagonal hatch and holds no link; copy that markup for
-"not yet" items. It sits at `#7`, and the contact row (`id="contact"`) comes after it — the header's
+"not yet" items. It sits at `#2`, and the contact row (`id="contact"`) comes after it — the header's
 `contact` link targets that row, so the list has no separate contact section. That row is an ordinary
 `.index-hit` apart from its `mailto:` href, its gutter and its colour: `.index-left--mark` swaps the
 number for a yellow `,,,` — the site's comma mark, reused as the list's "and so on" — one line of the
 same 40% type, so it sits in the row's upper half like the `#` does. `.index-name--mark` gives the
-address the same yellow, because that row is the index's one link. The mark is `aria-hidden`, so the
-link's accessible name is still just the address.
+address the same yellow, because that row is the list's contact rather than one of its services. The mark
+is `aria-hidden`, so the link's accessible name is still just the address.
 
-The list ends at `#8`, mschf's notation for a service that has not opened: the number is real and the
-name is not. The row is a run of `?` long enough to be cut by its column, and because every glyph is
-identical the character ticker steps it invisibly — which is why it reads as still rather than animated.
-It holds no link, for the same reason `#7` holds none. The run is `aria-hidden` and the row carries a
-`visually-hidden` "Unannounced", so a screen reader gets a label instead of thirty-two question marks;
-trim or lengthen the run to taste, the column clips it.
+The list closes with a run of unnamed rows, `#3` through `#10`: mschf's notation for a service that has not
+opened — the number is real and the name is not. Each row is a run of `?` long enough to be cut by its
+column, and because every glyph is identical the character ticker steps it invisibly — which is why they
+read as still rather than animated. They hold no link, for the same reason `#2` holds none. The run is
+`aria-hidden` and each row carries a `visually-hidden` "Unannounced", so a screen reader gets a label
+instead of thirty-two question marks; trim or lengthen the run to taste, the column clips it.
 
-`index-row--unnamed` is that row's one rule, and it only bites on the wrapping branch: a run of identical
+`index-row--unnamed` is those rows' one rule, and it only bites on the wrapping branch: a run of identical
 glyphs gains nothing from wrapping, and it would leave a line carrying a single `?`, so the row keeps
 `nowrap` and the clip at every width. Two traps live under it. The clip has to come back with the
 `nowrap`, or the run paints past the row on a narrow screen. And `.index-name` is `position: relative` so
@@ -173,6 +177,10 @@ In GitHub **Settings → Pages**, set **Source** to **Deploy from a branch**, br
 `.nojekyll` in the root is what makes that literal. Without it Pages runs the branch through Jekyll
 first, and a static site has no reason to be processed by a blog generator — the marker says "serve
 these files as they are".
+
+GitHub writes the custom-domain file into whichever folder the source points at, so a stray
+`docs/CNAME` means the folder was `/docs` at some point. This repository publishes from the root —
+`CNAME` sits there — so a leftover `docs/CNAME` is inert.
 
 ### If a push changes nothing
 
