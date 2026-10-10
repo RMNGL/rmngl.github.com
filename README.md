@@ -23,6 +23,8 @@ the tab is the whole development loop.
 | ASCII backdrop | `src/ascii-backdrop.js` | Full-viewport character grid; cycling scenes (below) |
 | Index marquee | `src/site-index.js` | Character-stepped ticker for over-wide row names |
 | Styles | `src/style.css` | Layer stack, grid rows, responsive/reduced-motion branches |
+| Header marks | `src/rmngl-wordmark.png`, `src/rmngl-symbol.png` | Alpha-only masks; the ink is `currentColor` (see *The header lockup*) |
+| Tab icon | `src/favicon.png`, `src/apple-touch-icon.png` | The symbol mask, white on the field's black |
 | Entry | `src/main.js` | Wires the two modules, disposes on `pagehide` |
 
 `index.html` is the only entry point: it links `src/style.css` with a `<link>` and loads `src/main.js`
@@ -64,44 +66,43 @@ density map — eyeballing a screenshot misleads, because the scrim and the page
 
 ### The header lockup
 
-The header carries the wordmark, the nav, and a corner mark of its own. The wordmark is the bare word —
-`RMNGL`, no plate — because the word *is* the link, so its accessible name is exactly `RMNGL`; the mark
-beside it is `aria-hidden`, so it adds nothing to that name. `.logo` is a flex row (`gap: 0.5rem`), which
-is what makes the pair read as one lockup.
+The header carries the wordmark, the nav, and a mark of its own at the right edge. Both marks are raster
+assets in `src/`, but neither is an `<img>`: each is a `<span>` filled with `currentColor` and clipped by
+`mask-image`, so the file supplies the shape and the stylesheet supplies the ink. That is what keeps the
+hover a one-declaration move to yellow, and it is why the assets are alpha-only — the paper is gone, only
+the antialiased coverage of the ink survives. The `-webkit-` prefix stays on the mask declarations: a mask
+that fails is an invisible wordmark, not a soft edge, so this is the one place the site pays for the older
+syntax.
 
-`.logo__mark` is the name's meaning drawn: two circles overlapping, with the overlap inked in, because
-"remingle" is two things sharing a region. It is one `<svg>` in a 24 box, and the lens is the *exact*
-intersection of the two circles — `r="5.6"` at `8.6`/`15.4`, so the crossings land on `12 7.55` and
-`12 16.45`, which are the path's endpoints and its arc radius. Those numbers are the whole trick: a lens
-drawn by eye leaves a sliver between itself and the circles, and the mark is only as good as that seam.
-The lens is `currentColor` at `fill-opacity: 0.45`, so the mark stays monochrome like the badge and still
-moves to yellow with the word on hover, with no second declaration.
+`.logo` is the home link, and its accessible name is exactly `RMNGL`. The mask is the link's only content,
+so the mask wears that label itself (`role="img" aria-label="RMNGL"`) rather than the link wearing it.
+Height drives each mark and `aspect-ratio` carries the asset's own ratio (`867 / 326`, `729 / 444`), so
+neither can letterbox; the clamps resolve to ~64px and ~46px on desktop, and at 320px — the header's
+tightest case — the two marks, the nav and the gaps come to ~235px of the 273px left once the scrollbar
+has taken its 15px.
 
-The box is deliberately larger than the type: the rings are 11.2 of its 24, which puts them at the cap
-height of the 18px word beside them, so the mark reads as one weight with the letters instead of as a
-badge parked next to them. It costs 32px of header, which is why the mark is `1.5rem` and not larger — at
-320px, with a scrollbar taking its 15px, the nav's left edge lands on the wordmark's right edge, so there
-is nothing left to give.
+`.logo__word` is the drawn wordmark: lowercase, one weight, the `g`'s tail the only exit from the
+baseline. It replaced a text lockup (two overlapping circles plus `RMNGL` set in Space Grotesk), so the
+display face went with it — the Google Fonts URL in `index.html` no longer requests Space Grotesk, and
+`--font-display` is gone from `:root`.
 
-The face is the header's other styling decision: `.logo` drops the inherited mono for `--font-display`,
-Space Grotesk at `700`. A wordmark has to read as a logo rather than a label, and Space Grotesk is derived
-from Space Mono, so it keeps the site's skeleton (squarish caps, the same terminal cuts) while being a
-proportional display face — the mono family stays everywhere else. Weight and tracking carry the rest:
-`-0.01em`, tight enough that five caps set as one shape. The family rides on the Google Fonts `<link>` in
-`index.html`, so a new weight means a new entry in that URL.
+`.logo-symbol` is the reconnection loop: the same idea the old mark drew — two things sharing a region —
+as one line that closes on itself. It is `aria-hidden` and holds no link, so the header still has a
+single home link; the nav takes the slack with `margin-left: auto`, which is what keeps the mark pinned
+to the right edge. It keeps a hover even though it holds no link and takes no focus: it is the wordmark's
+other half, so it answers to the pointer the way the word does. Hover-only is the trade — a keyboard user
+never sees it.
 
-The third element is `.logo-badge`: the comma itself, drawn bare on the header, three times, stepping
-downhill (`viewBox="0 0 35 29"` — one `<path>` in `<defs>`, three `<use>`). The run is the whole point.
-Three upright commas read as three exclamation points — MSCHF's `!!!` is a registered mark of
-theirs, so they are stepped, and on the diagonal the eye takes them as punctuation. There is
-deliberately no plate behind them and no red, for the same reason. It is `aria-hidden` and holds no
-link, so the header still has a single home link (the wordmark); the nav takes the slack with
-`margin-left: auto`, which is what keeps the mark pinned to the right edge.
-The mark is `clamp(1.75rem, 6vw, 2.75rem)` wide — the value that keeps a 320px header from overflowing —
-and the SVG's own 35:29 box sets its height, so there is no square to letterbox. `fill: currentColor`
-lets the hover move the whole mark to yellow with one declaration. That hover stays, even though the
-badge holds no link and takes no focus: it is the wordmark's punctuation, so it answers to the pointer
-the way the word does. Hover-only is the trade — a keyboard user never sees it.
+The tab icon is that same mark, white on the field's black so it reads in a light tab strip and a dark
+one: `src/favicon.png` (32) and `src/apple-touch-icon.png` (180), both drawn from `rmngl-symbol.png` and
+both linked from `index.html`.
+
+Cutting a mask from a new drawing is the whole asset pipeline. Take alpha from `paper - luminance`, with
+the paper level read off a border ring (so a vignette cannot skew it) and the ink level taken as the
+0.2th percentile of luminance rather than the minimum — one stray dark speck would otherwise take the
+reference, and the ink would come out at 83% of its colour instead of solid. Normalise so the deepest ink
+is opaque, then trim to the ink's bounding box. A redraw is therefore a new file, one number in
+`aspect-ratio`, and nothing else.
 
 ## Editing the service index
 

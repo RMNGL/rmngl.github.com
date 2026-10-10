@@ -8,10 +8,15 @@
       content="RMNGL — Remingle. Short name, long memory. A holding company. Seoul."
     />
     <title>RMNGL</title>
+    <!-- The tab icon is the corner mark: the loop, white on the field's black, so
+         it reads in a light tab strip and a dark one. The mask asset is the source;
+         these two are drawn from it. -->
+    <link rel="icon" href="/src/favicon.png" sizes="32x32" type="image/png" />
+    <link rel="apple-touch-icon" href="/src/apple-touch-icon.png" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=JetBrains+Mono:wght@400;600&family=Space+Grotesk:wght@700&family=UnifrakturMaguntia&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=JetBrains+Mono:wght@400;600&family=UnifrakturMaguntia&display=swap"
       rel="stylesheet"
     />
     <link rel="stylesheet" href="/src/style.css" />
@@ -25,38 +30,20 @@
     <div class="scanlines" aria-hidden="true"></div>
 
     <header class="site-header">
-      <!-- Wordmark lockup: the mark, then the name. The mark is the name's
-           meaning drawn — two circles overlapping, the overlap itself inked in,
-           because "remingle" is two things sharing a region. Decorative: the
-           word carries the link, so the link's accessible name is still exactly
-           "RMNGL". -->
+      <!-- Wordmark lockup: the drawn word, then the mark that closes it. The word
+           is the link, so its accessible name is exactly "RMNGL" — the letterforms
+           are a mask now, not text, so the mask wears that label itself. -->
       <a class="logo" href="/">
-        <svg class="logo__mark" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
-          <circle cx="8.6" cy="12" r="5.6" />
-          <circle cx="15.4" cy="12" r="5.6" />
-          <!-- The lens: the exact intersection of the two circles above, so its
-               arcs land on theirs. Endpoints are the circles' own crossings. -->
-          <path class="logo__lens" d="M12 7.55A5.6 5.6 0 0 1 12 16.45A5.6 5.6 0 0 1 12 7.55Z" />
-        </svg>
-        RMNGL
+        <span class="logo__word" role="img" aria-label="RMNGL"></span>
       </a>
       <nav class="site-nav mono" aria-label="Primary">
         <a href="#services">services</a>
         <a href="#contact">contact</a>
       </nav>
-      <!-- Corner mark: the wordmark's comma, drawn bare, three times, stepping
-           downhill. The run is what keeps it punctuation rather than three
-           upright bars. Decorative — the wordmark carries the link. -->
-      <span class="logo-badge" aria-hidden="true">
-        <svg class="logo-badge__mark" viewBox="0 0 35 29" aria-hidden="true">
-          <defs>
-            <path id="rmngl-comma" d="M10.25 11.75A4.6 4.6 0 1 1 13.5 13.1C13.9 16.4 9.6 19.8 4.8 22.6 6.6 17.6 8.2 14.2 10.25 11.75Z" />
-          </defs>
-          <use href="#rmngl-comma" transform="scale(0.72)" />
-          <use href="#rmngl-comma" transform="translate(9 5) scale(0.72)" />
-          <use href="#rmngl-comma" transform="translate(18 10) scale(0.72)" />
-        </svg>
-      </span>
+      <!-- Corner mark: the reconnection loop — the wordmark's meaning drawn, one
+           line that closes on itself, because "remingle" is two things sharing a
+           region. Decorative — the wordmark carries the link. -->
+      <span class="logo-symbol" aria-hidden="true"></span>
     </header>
 
     <main>

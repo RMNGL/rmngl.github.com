@@ -11,9 +11,6 @@
   --red: #f00007;
   --rule: rgba(132, 137, 142, 0.16);
   --font-mono: "JetBrains Mono", ui-monospace, monospace;
-  /* The wordmark's face. Space Grotesk descends from Space Mono, so it keeps the
-     site's skeleton while being a proportional display face. */
-  --font-display: "Space Grotesk", ui-sans-serif, system-ui, sans-serif;
   --header-h: 4rem;
 }
 
@@ -137,43 +134,40 @@ body {
   backdrop-filter: blur(6px);
 }
 
-/* Header wordmark: the bare word, set in the display face, preceded by the mark
-   that carries the name's meaning. Weight and tracking do the rest of the work —
-   700 with a hair of negative tracking, so five caps set as one shape rather than
-   five letters. The word is the whole link, so its accessible name is exactly
-   "RMNGL"; the mark is aria-hidden and adds nothing to it. */
+/* Header wordmark: the drawn word — lowercase, one weight, the `g`'s tail the only
+   exit from the baseline — carried as a mask rather than an <img>. The asset holds
+   the shape, currentColor holds the ink, which is what keeps the hover a
+   one-declaration move to yellow. Height drives the size and the asset's own ratio
+   (867 × 326) sets the width, so the word never letterboxes. The link's accessible
+   name is exactly "RMNGL": the mask is the link's only content, so the mask itself
+   wears that label. */
 .logo {
   display: flex;
   align-items: center;
-  gap: 0.5rem;
   color: var(--fg-strong);
-  font-family: var(--font-display);
-  font-weight: 700;
-  font-size: 1.125rem;
-  letter-spacing: -0.01em;
   text-decoration: none;
 }
 
-/* The mark: two circles overlapping, the overlap inked in. "Remingle" is two
-   things sharing a region, so the shared region is the mark — drawn as the exact
-   intersection of the two circles, not a lens placed on top of them. Sized so the
-   rings (11.2 of the box's 24) land near the cap height of the word beside them,
-   which is why the box is bigger than the type. Monochrome like the badge: the
-   lens is a tone of currentColor, so the whole mark moves to yellow on hover
-   without a second declaration. */
-.logo__mark {
+/* Both marks in the lockup are the same machinery — a raster alpha mask filled with
+   currentColor — so they share the declarations that do not depend on the file. The
+   prefix is the one place the site pays for the older syntax: a mask that fails is
+   an invisible wordmark, not a soft edge. */
+.logo__word,
+.logo-symbol {
   flex: none;
-  width: 1.5rem;
-  height: 1.5rem;
-  fill: none;
-  stroke: currentColor;
-  stroke-width: 2;
+  display: block;
+  background-color: currentColor;
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  mask-size: contain;
 }
 
-.logo__lens {
-  fill: currentColor;
-  fill-opacity: 0.45;
-  stroke: none;
+.logo__word {
+  height: clamp(1.05rem, 3.2vw, 1.5rem);
+  aspect-ratio: 867 / 326;
+  -webkit-mask-image: url("/src/rmngl-wordmark.png");
+  mask-image: url("/src/rmngl-wordmark.png");
 }
 
 .logo:hover,
@@ -181,35 +175,26 @@ body {
   color: var(--yellow);
 }
 
-/* Corner mark: the comma, drawn bare on the header, three times, stepping
-   downhill — the header's one piece of punctuation now that the wordmark is
-   plain text. The run is the point: three upright commas read as three
-   exclamation points (MSCHF's "!!!", a registered mark of theirs), so they are
-   stepped, and on the diagonal the eye takes them as punctuation. No plate
-   behind it and no red, for the same reason. It is decorative (the wordmark
-   carries the link), so it holds no name and no focus. Sized off the viewport so
-   a 320px header still fits beside the nav. */
-.logo-badge {
-  flex: none;
-  display: block;
+/* Corner mark: the reconnection loop — the name's meaning drawn, one line that
+   closes on itself, because "remingle" is two things sharing a region. It is
+   decorative (the wordmark carries the link), so it holds no name and no focus.
+   Height drives it and the asset's own ratio (729 × 444) sets the width; the clamp
+   is the value that keeps a 320px header from overflowing. */
+.logo-symbol {
   margin-left: clamp(0.6rem, 1.6vw, 1.25rem);
+  /* Same ink as the wordmark: the mark is the lockup's other half, not another
+     nav item, so it does not take the nav's dimmer --fg. */
   color: var(--fg-strong);
+  height: clamp(1.25rem, 3.6vw, 1.75rem);
+  aspect-ratio: 729 / 444;
+  -webkit-mask-image: url("/src/rmngl-symbol.png");
+  mask-image: url("/src/rmngl-symbol.png");
 }
 
-.logo-badge__mark {
-  display: block;
-  /* Width drives the size; the SVG's own 35 × 29 box sets the height, so there is
-     no square to letterbox. currentColor is what lets the hover move the whole
-     mark with one declaration. */
-  width: clamp(1.75rem, 6vw, 2.75rem);
-  height: auto;
-  fill: currentColor;
-}
-
-/* The badge keeps a hover even though it holds no link and takes no focus: it is
-   the wordmark's punctuation, so it answers to the pointer the way the word does.
+/* The mark keeps a hover even though it holds no link and takes no focus: it is the
+   wordmark's other half, so it answers to the pointer the way the word does.
    Hover-only is the trade — a keyboard user never sees it. */
-.logo-badge:hover {
+.logo-symbol:hover {
   color: var(--yellow);
 }
 
