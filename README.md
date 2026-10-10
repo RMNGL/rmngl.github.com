@@ -178,9 +178,9 @@ In GitHub **Settings → Pages**, set **Source** to **Deploy from a branch**, br
 first, and a static site has no reason to be processed by a blog generator — the marker says "serve
 these files as they are".
 
-GitHub writes the custom-domain file into whichever folder the source points at, so a stray
-`docs/CNAME` means the folder was `/docs` at some point. This repository publishes from the root —
-`CNAME` sits there — so a leftover `docs/CNAME` is inert.
+GitHub writes the custom-domain file into whichever folder the source points at, so a folder set to
+`/docs` makes GitHub commit a `docs/CNAME` this repository does not use. The root `CNAME` is the one
+branch-based Pages reads here; if a `docs/CNAME` ever appears, delete it and check the folder.
 
 ### If a push changes nothing
 
