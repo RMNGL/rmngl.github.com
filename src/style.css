@@ -148,12 +148,13 @@ body {
   text-decoration: none;
 }
 
-/* Both marks in the lockup are the same machinery — a raster alpha mask filled with
-   currentColor — so they share the declarations that do not depend on the file. The
-   prefix is the one place the site pays for the older syntax: a mask that fails is
-   an invisible wordmark, not a soft edge. */
+/* The marks are one machinery — a raster alpha mask filled with currentColor — so
+   they share the declarations that do not depend on the file: the lockup's two, and
+   the row mark further down. The prefix is the one place the site pays for the older
+   syntax: a mask that fails is an invisible wordmark, not a soft edge. */
 .logo__word,
-.logo-symbol {
+.logo-symbol,
+.index-mark {
   flex: none;
   display: block;
   background-color: currentColor;
@@ -349,6 +350,55 @@ a.index-hit:focus-visible {
   outline-offset: 4px;
 }
 
+/* The row mark: mschf answers a linked row with a glyph appended after the name —
+   `a.link:not(.latest):hover:after { content: "↗" }`, a flex item packed after the
+   name span, so it lands on the name's last letter rather than at the row's end.
+   This is that slot carrying the corner mark instead, because the loop says the row
+   comes back where the arrow said it leaves. Their `:not(.latest)` keeps the glyph
+   off their newest row; that exception is not carried over, since the one linked row
+   here is the newest one.
+
+   The mask declarations are the shared block at the top; this only sizes the mark,
+   colours it, and answers the pointer. It is `aria-hidden` and takes no focus of its
+   own — the row is still named by its name. */
+.index-mark {
+  display: none;
+  /* Under the cap height and on the baseline, so it reads as a glyph beside the
+     name rather than as a badge on it. Width comes from the asset's own ratio. */
+  height: 0.55em;
+  aspect-ratio: 729 / 444;
+  /* A sixth of the row's type: mschf's glyph sits flush against the name, which at
+     24px glues the loop to the last letter. */
+  margin-left: 0.16em;
+  /* The file, as with the lockup's two: the shared block above holds the repeat and
+     the size, this holds which mask. */
+  -webkit-mask-image: url("/src/rmngl-symbol.png");
+  mask-image: url("/src/rmngl-symbol.png");
+  /* The ink the name itself takes on hover: the mark is the row's other half, not a
+     second signal, so it arrives in the same white rather than in the yellow the site
+     spends on links. */
+  color: var(--fg-strong);
+}
+
+a.index-hit:hover .index-mark,
+a.index-hit:focus-visible .index-mark {
+  display: inline-block;
+  /* It arrives turning and settles, which is the mark closing rather than a
+     decoration fading in. Applied by the hover rule itself, so the swing replays
+     every time the pointer re-enters the row. */
+  animation: index-mark-return 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+@keyframes index-mark-return {
+  from {
+    transform: rotate(-45deg);
+  }
+
+  to {
+    transform: rotate(0deg);
+  }
+}
+
 /* "not yet" row — red + diagonal hatch. No `cursor: default` needed: the row is
    a div, not a link, so the pointer is already an arrow. */
 .index-row--tbd {
@@ -472,5 +522,11 @@ a.index-hit:focus-visible {
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
+  }
+
+  /* The row mark still answers the pointer — it only loses the swing. */
+  a.index-hit:hover .index-mark,
+  a.index-hit:focus-visible .index-mark {
+    animation: none;
   }
 }

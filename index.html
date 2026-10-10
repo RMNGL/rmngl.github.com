@@ -55,12 +55,15 @@
           <!-- #1 is the one row that leaves the site, so it opens in a new tab and
                the hidden label says so. The label sits inside .index-name, which
                is its containing block — as a third child of .index-hit it would
-               become a third grid item. -->
+               become a third grid item. The row mark lives in there too, after the
+               name: mschf answers a linked row with a "↗" appended on hover, and
+               this is that slot carrying the loop instead. -->
           <li class="index-row" data-ticker>
             <a class="index-hit" href="https://blog.monoclers.com" target="_blank" rel="noopener">
               <span class="index-left" aria-hidden="true">#<br />1</span>
               <span class="index-name"
                 ><span class="index-ticker">Monoclers Blog</span
+                ><span class="index-mark" aria-hidden="true"></span
                 ><span class="visually-hidden">opens in a new tab</span></span
               >
             </a>

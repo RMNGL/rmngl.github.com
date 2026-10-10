@@ -168,8 +168,22 @@ and the row takes a link if it has one — the shape `#1` already has.
 A row that is not a link answers to nothing. Every hover rule here hangs off `a.index-hit`, so the `?` rows
 and the tbd row keep their gray while the pointer crosses them and the pointer stays an arrow — which is
 how mschf's own list works, where each `:hover` rule hangs off `a.link` and a `?` row is a plain div
-inside a section that sets `cursor: default`. The one thing on the run that does answer is the plate on
-its first row.
+inside a section that sets `cursor: default`.
+
+A row that is a link answers twice: its name goes white, and a mark arrives after it. mschf's mark is a
+glyph — `a.link:not(.latest):hover:after { content: "↗" }`, a flex item packed after the name span, so it
+lands on the name's last letter rather than at the row's end — and ours is the corner mark in that same slot,
+because the loop says the row comes back where the arrow said it leaves. Their `:not(.latest)` keeps the glyph
+off their newest row; that exception is not carried over, since the one linked row here *is* the newest. The
+mark arrives in the same white the name takes on hover — the row's other half, not a second signal — it is
+`aria-hidden` and takes no focus of its own, and it lives inside `.index-name` rather than in a third grid
+track: a track would narrow the name column and move the ticker's threshold for every row, where this only
+borrows the whitespace after the name. Hover is not the only way in — the rule opens on `:focus-visible` too,
+so a keyboard user gets the mark a mouse user gets. And it arrives turning: `index-mark-return` swings it in
+from `-45deg` and settles it at `0` with a slight overshoot, and `prefers-reduced-motion` drops the swing,
+leaving the mark itself in place.
+
+The one thing on the run that does answer is the plate on its first row.
 
 That plate is mschf's "NEXT UP": a black plate in the site's red, set at the gutter's 40% and pinned to
 the pointer, lifted clear of it (`translateY(-150%)`) and never a target (`pointer-events: none`).
