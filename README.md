@@ -164,6 +164,18 @@ instead of thirty-two question marks; trim or lengthen the run to taste, the col
 service opens, the row stops being notation: the run becomes the name, `index-row--unnamed` comes off,
 and the row takes a link if it has one — the shape `#1` already has.
 
+A row that is not a link answers to nothing. Every hover rule here hangs off `a.index-hit`, so the `?` rows
+and the tbd row keep their gray while the pointer crosses them and the pointer stays an arrow — which is
+how mschf's own list works, where each `:hover` rule hangs off `a.link` and a `?` row is a plain div
+inside a section that sets `cursor: default`. The one thing on the run that does answer is the plate on
+its first row.
+
+That plate is mschf's "NEXT UP": a black plate in the site's red, set at the gutter's 40% and pinned to
+the pointer, lifted clear of it (`translateY(-150%)`) and never a target (`pointer-events: none`).
+`src/site-index.js` positions it on `pointerenter` and `pointermove` and hides it on `pointerleave`;
+`@media (hover: none)` drops it where there is no hover to answer, so a touch screen never sees it. The
+claim is markup, not code: move the span to another row and the claim moves with it.
+
 `index-row--unnamed` is those rows' one rule, and it only bites on the wrapping branch: a run of identical
 glyphs gains nothing from wrapping, and it would leave a line carrying a single `?`, so the row keeps
 `nowrap` and the clip at every width. Two traps live under it. The clip has to come back with the

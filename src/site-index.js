@@ -74,3 +74,41 @@ export function initIndexTickers() {
     ruler.remove();
   };
 }
+
+/**
+ * The "Next up" plate on the first unannounced row: MSCHF's way of saying the
+ * run has a beginning. The plate is in the markup, pinned to the pointer and
+ * lifted clear of it; this only shows and hides it, so a row with no plate costs
+ * nothing. The rows themselves hold no link, which is why the plate — not a hover
+ * colour — is the one thing on them that answers to the pointer.
+ * @returns {() => void} dispose
+ */
+export function initNextUpPlate() {
+  const plate = document.querySelector(".index-next-up");
+  const row = plate?.closest(".index-row");
+  if (!plate || !row) return () => {};
+
+  const place = (event) => {
+    plate.style.left = `${event.clientX}px`;
+    plate.style.top = `${event.clientY}px`;
+  };
+
+  const show = (event) => {
+    place(event);
+    plate.classList.add("is-visible");
+  };
+
+  const hide = () => {
+    plate.classList.remove("is-visible");
+  };
+
+  row.addEventListener("pointerenter", show);
+  row.addEventListener("pointermove", place);
+  row.addEventListener("pointerleave", hide);
+
+  return () => {
+    row.removeEventListener("pointerenter", show);
+    row.removeEventListener("pointermove", place);
+    row.removeEventListener("pointerleave", hide);
+  };
+}

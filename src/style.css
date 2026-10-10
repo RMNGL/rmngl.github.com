@@ -347,23 +347,26 @@ main {
   display: inline-block;
 }
 
-.index-hit:hover .index-name,
-.index-hit:focus-visible .index-name {
+/* Only a row that is a link answers to the pointer. The tbd row and the "?" run
+   hold nothing to open, so their names stay gray on hover — MSCHF's rows work the
+   same way, where every hover rule hangs off `a.link`, never off a row. */
+a.index-hit:hover .index-name,
+a.index-hit:focus-visible .index-name {
   color: var(--fg-strong);
 }
 
-.index-hit:focus-visible {
+a.index-hit:focus-visible {
   outline: 2px solid var(--yellow);
   outline-offset: 4px;
 }
 
-/* "not yet" row — red + diagonal hatch */
+/* "not yet" row — red + diagonal hatch. No `cursor: default` needed: the row is
+   a div, not a link, so the pointer is already an arrow. */
 .index-row--tbd {
   color: var(--red);
 }
 
 .index-row--tbd .index-hit {
-  cursor: default;
   background-image: repeating-linear-gradient(
     45deg,
     rgba(240, 0, 7, 0.16) 0,
@@ -371,6 +374,38 @@ main {
     transparent 2px,
     transparent 9px
   );
+}
+
+/* MSCHF's "NEXT UP" plate: the unannounced run has a beginning, and its first row
+   says so. Black plate, the site's red, the gutter's 40% type, pinned to the
+   pointer and lifted clear of it — never a target (pointer-events: none), and
+   shown by src/site-index.js only while its row is hovered. */
+.index-next-up {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 9999;
+  display: none;
+  padding: 0.04em 0.08em 0;
+  background: var(--bg);
+  color: var(--red);
+  font-size: 0.4em;
+  line-height: 1.2;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+  pointer-events: none;
+  transform: translateY(-150%);
+}
+
+.index-next-up.is-visible {
+  display: block;
+}
+
+/* No hover to answer on a touch screen, so the plate never appears there. */
+@media (hover: none) {
+  .index-next-up.is-visible {
+    display: none;
+  }
 }
 
 /* Character-stepped ticker for names wider than the column */

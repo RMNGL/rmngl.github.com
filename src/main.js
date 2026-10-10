@@ -1,5 +1,5 @@
 import { initAsciiBackdrop } from "./ascii-backdrop.js";
-import { initIndexTickers } from "./site-index.js";
+import { initIndexTickers, initNextUpPlate } from "./site-index.js";
 
 const backdrop = document.getElementById("ascii-backdrop");
 
@@ -10,6 +10,7 @@ if (backdrop instanceof HTMLCanvasElement) {
 }
 
 cleanups.push(initIndexTickers());
+cleanups.push(initNextUpPlate());
 
 window.addEventListener("pagehide", () => {
   cleanups.forEach((fn) => fn());
