@@ -176,7 +176,15 @@ the pointer, lifted clear of it (`translateY(-150%)`) and never a target (`point
 `@media (hover: none)` drops it where there is no hover to answer, so a touch screen never sees it. The
 claim is markup, not code: move the span to another row and the claim moves with it.
 
-`index-row--unnamed` is those rows' one rule, and it only bites on the wrapping branch: a run of identical
+The run is read through a mosaic, which is mschf's own treatment of it: a checkerboard of the field colour
+over the row, so the `?` come through as a texture of squares rather than glyphs. That is their
+`.tile-overlay` — two 45° gradients, each painting opposite corners of a square tile, offset by half a tile
+— hung on `.index-row--unnamed .index-hit::after`, covering the gutter as well as the name because theirs
+does: of their rows, only the ten that carry a `?` run wear it. The tile is `0.0923em` of the row's type —
+their `0.4166vw` against `4.5138vw` of type — which holds their ratio at every width rather than their
+two-step vw sizes. It is a background on the row's box, so the row's height does not move.
+
+`index-row--unnamed` also carries the wrapping branch's rules, and they only bite there: a run of identical
 glyphs gains nothing from wrapping, and it would leave a line carrying a single `?`, so the row keeps
 `nowrap` and the clip at every width. Two traps live under it. The clip has to come back with the
 `nowrap`, or the run paints past the row on a narrow screen. And `.index-name` is `position: relative` so
