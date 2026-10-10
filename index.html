@@ -65,10 +65,17 @@
         <h1 class="visually-hidden">RMNGL</h1>
 
         <ol class="index-list">
+          <!-- #1 is the one row that leaves the site, so it opens in a new tab and
+               the hidden label says so. The label sits inside .index-name, which
+               is its containing block — as a third child of .index-hit it would
+               become a third grid item. -->
           <li class="index-row" data-ticker>
-            <a class="index-hit" href="https://blog.monoclers.com">
+            <a class="index-hit" href="https://blog.monoclers.com" target="_blank" rel="noopener">
               <span class="index-left" aria-hidden="true">#<br />1</span>
-              <span class="index-name"><span class="index-ticker">Monoclers Blog</span></span>
+              <span class="index-name"
+                ><span class="index-ticker">Monoclers Blog</span
+                ><span class="visually-hidden">opens in a new tab</span></span
+              >
             </a>
           </li>
           <li class="index-row index-row--tbd" data-ticker>
