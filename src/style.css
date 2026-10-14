@@ -313,6 +313,7 @@ body[page-type="index.search"][data-search-has-query] #releases {
 #site-title {
   display: flex;
   align-items: center;
+  gap: 0.35rem;
   background: #fff !important;
   color: #000 !important;
 }
@@ -323,6 +324,22 @@ body[page-type="index.search"][data-search-has-query] #releases {
   height: 1px;
   overflow: hidden;
   clip: rect(0, 0, 0, 0);
+}
+
+.logo__symbol {
+  display: block;
+  flex-shrink: 0;
+  height: 0.95rem;
+  aspect-ratio: 729 / 444;
+  background-color: #000;
+  -webkit-mask-image: url("/src/rmngl-symbol.png");
+  mask-image: url("/src/rmngl-symbol.png");
+  -webkit-mask-repeat: no-repeat;
+  mask-repeat: no-repeat;
+  -webkit-mask-size: contain;
+  mask-size: contain;
+  position: relative;
+  top: 0.12rem;
 }
 
 .logo__word {
