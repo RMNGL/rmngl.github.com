@@ -235,7 +235,7 @@ export function initAsciiBackdrop(canvas) {
             AMBIENT_CHARSET.length - 1,
             Math.max(0, Math.round(((field + 1) / 2) * AMBIENT_CHARSET.length) - 1),
           );
-          ctx.fillStyle = "rgba(70, 150, 200, 0.08)";
+          ctx.fillStyle = "rgba(20, 20, 20, 0.045)";
           ctx.fillText(AMBIENT_CHARSET[ambientIndex] ?? ".", x * cell, y * cell + drift);
           continue;
         }
@@ -253,11 +253,11 @@ export function initAsciiBackdrop(canvas) {
             ? (CHARSET[Math.floor(Math.random() * CHARSET.length)] ?? "#")
             : (CHARSET[index] ?? "#");
 
-        const alpha = 0.1 + strength * 0.42 + jitter * 0.2;
+        const alpha = 0.04 + strength * 0.22 + jitter * 0.08;
         const accent = (x * 7 + y * 5) % 37 === 0;
         ctx.fillStyle = accent
-          ? `rgba(255, 199, 0, ${alpha})`
-          : `rgba(64, 190, 255, ${alpha * 0.9})`;
+          ? `rgba(44, 74, 62, ${alpha * 1.1})`
+          : `rgba(20, 20, 20, ${alpha})`;
         ctx.fillText(ch, x * cell, y * cell + drift);
       }
     }

@@ -1,0 +1,17 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Search — Remingle (RMNGL)</title>
+    <script>
+      (function () {
+        var q = new URLSearchParams(location.search).get("q");
+        var path = location.pathname.replace(/search\.html$/i, "");
+        if (!path.endsWith("/")) path += "/";
+        var hash = q ? "#search?q=" + encodeURIComponent(q) : "#search";
+        location.replace(path + hash);
+      })();
+    </script>
+  </head>
+  <body></body>
+</html>

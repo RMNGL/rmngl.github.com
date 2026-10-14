@@ -1,45 +1,68 @@
 /* ------------------------------------------------------------------
-   RMNGL — holding-company index.
-   Layers: ASCII backdrop (canvas) → scrim → content → grain/scanlines.
-   Palette: black field, gray mono type, yellow links, red "not yet".
+   RMNGL — layout / type matched to visualsociety.ch (index.css).
+   Unreleased rows: ???? + checker mosaic on .t2 only.
    ------------------------------------------------------------------ */
+@font-face {
+  font-family: SBM;
+  src: url("/src/sbm.woff") format("woff");
+  font-weight: 400;
+  font-style: normal;
+}
+
 :root {
-  --bg: #000;
-  --fg: #84898e;
-  --fg-strong: #f5f5f6;
-  --yellow: #ffc700;
-  --red: #f00007;
-  --rule: rgba(132, 137, 142, 0.16);
-  --font-mono: "JetBrains Mono", ui-monospace, monospace;
-  --header-h: 4rem;
+  --accent-color: #1100ff;
+  --field: #fff;
+  --header-offset: 2.95rem;
+  --infos-w: 16rem;
+  /* VAS desktop/mobile caps, scaled continuously between (MSCHF-style fluid index). */
+  --t2-size: clamp(1.65rem, 9.2vw, 6.0241rem);
+  --t2-line: clamp(1.45rem, 7.65vw, 5rem);
 }
 
 *,
 *::before,
 *::after {
   box-sizing: border-box;
+  touch-action: manipulation;
 }
 
 html {
   scroll-behavior: smooth;
 }
 
-body {
-  margin: 0;
-  min-height: 100vh;
-  background: var(--bg);
-  color: var(--fg);
-  font-family: var(--font-mono);
-  font-size: 1rem;
-  line-height: 1.5;
-  overflow-x: hidden;
+html {
+  overflow-x: clip;
 }
 
-/* Uppercase type role. The family is inherited from body, so this only sets
-   case — which is why the nav is the one place that carries it: the wordmark is
-   already uppercase, and the `#N` gutter and the skip link have no cased glyphs. */
-.mono {
-  text-transform: uppercase;
+html,
+body {
+  float: left;
+  clear: none;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  min-height: 100vh;
+  background: var(--field);
+  color: #000;
+  font-family: SBM, sans-serif;
+  font-size: 0.753rem;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  overflow-x: clip;
+}
+
+html::after,
+body::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+a,
+a:visited {
+  color: inherit;
+  text-decoration: none;
 }
 
 .visually-hidden {
@@ -59,262 +82,474 @@ body {
   top: 1rem;
   z-index: 10000;
   padding: 0.75rem 1rem;
-  background: var(--yellow);
-  color: #000;
-  text-decoration: none;
+  background: var(--accent-color);
+  color: #fff;
 }
 
 .skip-link:focus {
   left: 1rem;
 }
 
-/* ------------------------------------------------------------------
-   Layers
-   ------------------------------------------------------------------ */
-.ascii-backdrop {
-  position: fixed;
-  inset: 0;
-  z-index: 0;
+.accent {
+  color: var(--accent-color);
+}
+
+.check .accent {
+  opacity: 0;
+  font-size: 1rem;
+  position: relative;
+  top: 0.05rem;
+}
+
+.active .check .accent,
+a.active .check .accent {
+  opacity: 1;
+}
+
+.t2 {
+  font-size: var(--t2-size);
+  line-height: var(--t2-line);
+  max-width: 100%;
+}
+
+main {
+  float: left;
   width: 100%;
-  height: 100%;
-  pointer-events: none;
 }
 
-.scrim {
-  position: fixed;
-  inset: 0;
-  z-index: 1;
-  pointer-events: none;
-  background:
-    linear-gradient(90deg, rgba(0, 0, 0, 0.74), rgba(0, 0, 0, 0.44) 58%, rgba(0, 0, 0, 0.22)),
-    radial-gradient(120% 80% at 50% 45%, rgba(0, 0, 0, 0) 38%, rgba(0, 0, 0, 0.6) 100%);
+#container,
+#page-content {
+  float: left;
+  clear: none;
+  width: 100%;
+  margin: 0;
 }
 
-.grain {
-  position: fixed;
-  inset: 0;
-  z-index: 9000;
-  pointer-events: none;
-  opacity: 0.3;
-  mix-blend-mode: overlay;
-  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.5'/%3E%3C/svg%3E");
+#container::after,
+#page-content::after,
+main::after {
+  content: "";
+  display: table;
+  clear: both;
 }
 
-.scanlines {
-  position: fixed;
-  inset: 0;
-  z-index: 8999;
-  pointer-events: none;
-  opacity: 0.3;
-  background: repeating-linear-gradient(
-    to bottom,
-    transparent 0,
-    transparent 2px,
-    rgba(0, 0, 0, 0.12) 2px,
-    rgba(0, 0, 0, 0.12) 3px
-  );
+.row {
+  display: block;
+  width: 100%;
+  float: left;
+}
+
+#page-content {
+  margin-top: var(--header-offset);
+  padding-bottom: 1rem;
+}
+
+.contained {
+  padding: 1rem;
 }
 
 /* ------------------------------------------------------------------
-   Header + page frame
+   About
    ------------------------------------------------------------------ */
-.site-header {
+.about-infos {
+  width: 16rem;
+  max-width: 100%;
+  margin-bottom: 1em;
+}
+
+.about-copy {
+  max-width: 100%;
+}
+
+.about-copy p {
+  margin: 0 0 0.65em;
+}
+
+.about-copy p:last-child {
+  margin-bottom: 0;
+}
+
+.hyphen {
+  hyphens: auto;
+}
+
+.about-infos .content a {
+  color: var(--accent-color);
+}
+
+.about-infos .content a:hover,
+.about-infos .content a:focus-visible {
+  text-decoration: underline;
+}
+
+/* Search (VAS /search) */
+#search {
+  position: relative;
+  float: left;
+  width: 100%;
+  margin: 0;
+}
+
+#search::after {
+  content: "";
+  display: table;
+  clear: both;
+}
+
+#search input[type="search"],
+#search input[type="submit"] {
+  float: left;
+  appearance: none;
+  border: 0;
+  margin: 0;
+  padding: 0;
+  box-shadow: none;
+  outline: 0;
+  background: transparent;
+  font: inherit;
+  font-family: SBM, sans-serif;
+  color: var(--accent-color);
+  font-size: var(--t2-size);
+  line-height: var(--t2-line);
+}
+
+#search input[type="submit"] {
+  display: none;
+  cursor: pointer;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 1;
+}
+
+#search input[type="submit"]:focus {
+  display: block;
+}
+
+#search input[name="q"] {
+  width: 100%;
+}
+
+.search-hint,
+.search-empty {
+  margin: 0.75rem 0 0;
+  color: #424242;
+}
+
+/* Search mode: index hidden until there is a query (VAS-like focus). */
+body[page-type="index.search"] #releases {
+  display: none;
+}
+
+body[page-type="index.search"][data-search-has-query] #releases {
+  display: block;
+  float: left;
+  width: 100%;
+}
+
+#releases[hidden] {
+  display: none !important;
+}
+
+.section--list-item[hidden],
+.section--list-item.is-filtered-out {
+  display: none !important;
+}
+
+#filters[hidden] {
+  display: none !important;
+}
+
+body[page-type="index.search"] #filters {
+  display: none !important;
+}
+
+body[page-type="index.search"] #search-panel {
+  min-height: 0;
+  padding-bottom: 0.25rem;
+}
+
+body[page-type="index.search"][data-search-has-query] #search-panel {
+  padding-bottom: 0.5rem;
+}
+
+body[page-type="index.search"][data-search-has-query] #releases {
+  margin-top: 0;
+}
+
+/* ------------------------------------------------------------------
+   Header
+   ------------------------------------------------------------------ */
+#site-header {
   position: fixed;
   top: 0;
   left: 0;
-  right: 0;
   z-index: 100;
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: var(--header-h);
-  padding: 0 clamp(1rem, 4vw, 3rem);
-  background: rgba(0, 0, 0, 0.6);
-  border-bottom: 1px solid var(--rule);
-  backdrop-filter: blur(6px);
+  width: 100%;
+  white-space: nowrap;
+  user-select: none;
+  background: var(--accent-color);
+  -webkit-backface-visibility: hidden;
+  backface-visibility: hidden;
 }
 
-/* Header wordmark: the drawn word — lowercase, one weight, the `g`'s tail the only
-   exit from the baseline — carried as a mask rather than an <img>. The asset holds
-   the shape, currentColor holds the ink, which is what keeps the hover a
-   one-declaration move to yellow. Height drives the size and the asset's own ratio
-   (867 × 326) sets the width, so the word never letterboxes. The link's accessible
-   name is exactly "RMNGL": the mask is the link's only content, so the mask itself
-   wears that label. */
-.logo {
+#site-header > a {
+  flex: 1;
+  padding: 1rem;
+  background: var(--accent-color);
+  color: #fff;
+}
+
+#site-header > a.active {
+  border-radius: 0 1rem 0 0;
+  background: #fff;
+  color: #000;
+}
+
+#site-title {
   display: flex;
   align-items: center;
-  color: var(--fg-strong);
-  text-decoration: none;
+  background: #fff !important;
+  color: #000 !important;
 }
 
-/* The marks are one machinery — a raster alpha mask filled with currentColor — so
-   they share the declarations that do not depend on the file: the lockup's two, and
-   the row mark further down. The prefix is the one place the site pays for the older
-   syntax: a mask that fails is an invisible wordmark, not a soft edge. */
-.logo__word,
-.logo-symbol,
-.index-mark {
-  flex: none;
+#site-title h1 {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+}
+
+.logo__word {
   display: block;
-  background-color: currentColor;
+  height: 0.87rem;
+  aspect-ratio: 867 / 326;
+  background-color: #000;
+  -webkit-mask-image: url("/src/rmngl-wordmark.png");
+  mask-image: url("/src/rmngl-wordmark.png");
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
   -webkit-mask-size: contain;
   mask-size: contain;
-}
-
-.logo__word {
-  height: clamp(1.05rem, 3.2vw, 1.5rem);
-  aspect-ratio: 867 / 326;
-  -webkit-mask-image: url("/src/rmngl-wordmark.png");
-  mask-image: url("/src/rmngl-wordmark.png");
-}
-
-.logo:hover,
-.logo:focus-visible {
-  color: var(--yellow);
-}
-
-/* Corner mark: the reconnection loop — the name's meaning drawn, one line that
-   closes on itself, because "remingle" is two things sharing a region. It is
-   decorative (the wordmark carries the link), so it holds no name and no focus.
-   Height drives it and the asset's own ratio (729 × 444) sets the width; the clamp
-   is the value that keeps a 320px header from overflowing. */
-.logo-symbol {
-  margin-left: clamp(0.6rem, 1.6vw, 1.25rem);
-  /* Same ink as the wordmark: the mark is the lockup's other half, not another
-     nav item, so it does not take the nav's dimmer --fg. */
-  color: var(--fg-strong);
-  height: clamp(1.25rem, 3.6vw, 1.75rem);
-  aspect-ratio: 729 / 444;
-  -webkit-mask-image: url("/src/rmngl-symbol.png");
-  mask-image: url("/src/rmngl-symbol.png");
-}
-
-/* The mark keeps a hover even though it holds no link and takes no focus: it is the
-   wordmark's other half, so it answers to the pointer the way the word does.
-   Hover-only is the trade — a keyboard user never sees it. */
-.logo-symbol:hover {
-  color: var(--yellow);
-}
-
-.site-nav {
-  /* The header is space-between, but the mark belongs with the nav at the right
-     edge, so the nav takes the slack instead of centring itself. */
-  margin-left: auto;
-  display: flex;
-  gap: clamp(1rem, 3vw, 2.5rem);
-  font-size: 0.72rem;
-  letter-spacing: 0.16em;
-}
-
-.site-nav a {
-  color: var(--fg);
-  text-decoration: none;
-}
-
-.site-nav a:hover,
-.site-nav a:focus-visible {
-  color: var(--yellow);
-}
-
-main {
   position: relative;
-  z-index: 2;
-  padding-top: var(--header-h);
+  top: 0.2rem;
+  padding: 0.1rem;
+}
+
+.overlay {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  background: rgba(0, 0, 0, 0.2);
+}
+
+#site-header.opened {
+  flex-wrap: wrap;
+  align-items: flex-start;
+}
+
+#site-header.opened > a {
+  flex-basis: 100%;
+  height: 3rem;
+}
+
+#site-header.opened > #site-title,
+#site-header.opened > .menu {
+  flex-basis: 50%;
+}
+
+#site-header.opened + .overlay {
+  display: block;
+}
+
+@media only screen and (max-width: 1023px) {
+  #site-header {
+    background: #fff;
+  }
+
+  #site-header > a.tab:not(.menu) {
+    display: none !important;
+  }
+
+  #site-header > a.active {
+    border-radius: 0;
+  }
+
+  #site-header .menu {
+    display: block;
+    background: var(--accent-color);
+    color: #fff;
+  }
+
+  #site-header.opened {
+    background: var(--accent-color);
+  }
+
+  #site-header.opened > a.tab:not(.menu) {
+    display: block !important;
+  }
+
+  #page-content {
+    padding-bottom: 0;
+  }
+}
+
+@media only screen and (min-width: 1024px) {
+  #site-header .menu {
+    display: none !important;
+  }
 }
 
 /* ------------------------------------------------------------------
-   Service index — numbered, text-only, mschf-style deadpan list
+   Filters (sticky on home)
    ------------------------------------------------------------------ */
-.index-zone {
-  /* Top padding is the whole gap between the fixed header and #1 — main already
-     clears the header with padding-top: var(--header-h). Kept tight so the index
-     hugs the header rule instead of floating below it: a row's ink starts ~5px
-     below the list's border-top, so the visible gap is this value + ~5px. */
-  padding: clamp(0.5rem, 1.2vw, 1rem) clamp(1rem, 4vw, 3rem) clamp(4rem, 10vw, 8rem);
+body[page-type="home"] #filters {
+  position: sticky;
+  position: -webkit-sticky;
+  top: var(--header-offset);
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  background: #fff;
+  z-index: 10;
 }
 
-.index-list {
+@media only screen and (max-width: 1023px) {
+  body[page-type="home"] #filters {
+    position: static;
+  }
+}
+
+section.section--filters {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0 1rem;
+}
+
+section.section--filters a {
+  white-space: nowrap;
+}
+
+section.section--filters a:not(:last-child) {
+  padding-right: 2em;
+}
+
+section.section--filters a:not(.active) {
+  color: #424242;
+}
+
+section.section--filters a.active {
+  color: #000;
+}
+
+/* ------------------------------------------------------------------
+   List items (VAS section.section--list-item)
+   ------------------------------------------------------------------ */
+section.section.section--list-items {
+  float: left;
+  clear: none;
+  width: 100%;
   margin: 0;
-  padding: 0;
-  list-style: none;
-  border-top: 1px solid var(--rule);
+  overflow: hidden;
 }
 
-.index-row {
-  border-bottom: 1px solid var(--rule);
+section.section.section--list-items::after {
+  content: "";
+  display: table;
+  clear: both;
 }
 
-/* Rows: #N gutter · name (ticker) */
-.index-hit {
-  display: grid;
-  /* The gutter is 4ch of the *gutter* type, as mschf sets it: 4 × 0.6 × 0.4em =
-     0.96em of the row size. It clears the widest cell, the contact row's ",,,"
-     (3ch of that same 0.4em), and resolves against the row font, so the whole
-     index still resizes from the one `font-size`. */
-  grid-template-columns: max(2.5rem, 0.96em) minmax(0, 1fr);
-  gap: clamp(0.75rem, 2vw, 2rem);
-  /* start, not baseline: "#N" is two stacked lines whose box is exactly the row's
-     line box, so it has to top-align. Baseline would lift the pair a full line and
-     push the digit through the row's bottom rule. On narrow screens a long name
-     wraps, and "#N" stays on its first line. */
-  align-items: start;
-  /* The line box is the row — no vertical padding, so rows sit mschf-tight. */
-  padding: 0;
-  /* The row's own textures live on this box: the tbd hatch is its background and
-     the "?" mosaic is an overlay pinned to it, so it is the box they measure
-     against. */
-  position: relative;
+a.section.section--list-item,
+div.section.section--list-item {
+  display: flex;
+  float: left;
+  clear: none;
+  width: 100%;
+  max-width: 100%;
+  margin: 0;
+  padding-left: 1rem;
+  padding-right: 1rem;
   color: inherit;
-  text-decoration: none;
-  text-transform: uppercase;
-  font-size: clamp(1.5rem, 6.4vw, 5.25rem);
-  line-height: 0.9;
+  min-width: 0;
 }
 
-/* "#N" gutter — mschf stacks "#" over the digit and runs the pair at 40% of the
-   row size (26px against 65px on their desktop), which is what lets the name own
-   the line. 0.4em × 1.125 line-height = 0.45em a line, so the two lines fill the
-   row's 0.9em line box exactly: the "#" sits in the upper half, the digit lands on
-   the name's baseline, and the row's height is unchanged. */
-.index-left {
-  font-size: 0.4em;
-  line-height: 1.125;
-  letter-spacing: 0;
-  color: rgba(132, 137, 142, 0.7);
+a.section.section--list-item:first-child,
+div.section.section--list-item:first-child {
+  margin-top: 0.5rem;
 }
 
-/* The contact row's gutter carries a yellow ",,," instead of a number — the
-   site's comma mark, reused as the list's "and so on". It stays aria-hidden, so
-   the link is still named by the address. */
-.index-left--mark {
-  color: var(--yellow);
+a.section.section--list-item:not(:last-child),
+div.section.section--list-item:not(:last-child) {
+  padding-bottom: 0.5rem;
 }
 
-/* The same row's name is the list's contact rather than one of its services, so
-   the address takes the yellow of the mark beside it. Hover still inverts it to
-   white with the rest of the rows: `.index-hit:hover .index-name` is the more
-   specific rule. */
-.index-name--mark {
-  color: var(--yellow);
+a.section.section--list-item:hover > .title .t2 {
+  color: var(--accent-color);
+}
+
+a.section.section--list-item > .infos,
+div.section.section--list-item > .infos {
+  width: var(--infos-w);
+  flex: 0 0 var(--infos-w);
+  float: left;
+}
+
+a.section.section--list-item > .title,
+div.section.section--list-item > .title {
+  width: calc(100% - var(--infos-w));
+  max-width: calc(100% - var(--infos-w));
+  display: flex;
+  flex-wrap: nowrap;
+  white-space: nowrap;
+  pointer-events: none;
+  min-width: 0;
+  overflow: hidden;
+}
+
+a.section.section--list-item > .title .t2,
+div.section.section--list-item > .title .t2 {
+  flex: 1 1 auto;
+  min-width: 0;
+  padding-right: 0.25rem;
+}
+
+.info-row {
+  display: flex;
+}
+
+.info-row:not(:last-child) {
+  margin-bottom: 0.2rem;
+}
+
+.info-row .title {
+  flex: 0 0 6.9rem;
+  width: 6.9rem;
+}
+
+.info-row .content {
+  color: var(--accent-color);
+  white-space: nowrap;
+  min-width: 0;
+}
+
+.info-row .content::before {
+  content: "[";
+  color: #000;
+}
+
+.info-row .content::after {
+  content: "]";
+  color: #000;
 }
 
 .index-name {
-  /* Clips the character ticker horizontally. Vertical clipping is switched off
-     in the @supports block below, so a tight line-height can never shear a
-     descender — the "@" in the contact row is the only one on the page. */
+  display: block;
   overflow: hidden;
   white-space: nowrap;
-  font-weight: 600;
-  letter-spacing: 0.01em;
-  /* Containing block for the row's `visually-hidden` label. Absolute and out of
-     flow, that label resolves against the page unless something inside the clip
-     anchors it — and on an over-wide ticker its static position is the far end of
-     the run, past the clipped edge, which drags the document's scrollWidth out
-     with it. Relative keeps the label inside this box. */
   position: relative;
+  pointer-events: auto;
 }
 
 @supports (overflow-x: clip) {
@@ -324,150 +559,183 @@ main {
   }
 }
 
-/* The tight line box leaves nothing under the baseline, and the contact row is
-   the only one carrying a descender (the "@" in hello@rmngl.com, 15px deep at
-   84px). Give just that row room to clear its rule instead of loosening every
-   row — the row keeps its padding: 0 top so the rhythm is unbroken. The hook is
-   a class, not `:last-child`: the "?" rows follow the contact row. */
-.index-row--descender .index-hit {
-  padding-bottom: 0.15em;
+.index-name--mark {
+  color: var(--accent-color);
 }
 
 .index-ticker {
   display: inline-block;
 }
 
-/* Only a row that is a link answers to the pointer. The tbd row and the "?" run
-   hold nothing to open, so their names stay gray on hover — MSCHF's rows work the
-   same way, where every hover rule hangs off `a.link`, never off a row. */
-a.index-hit:hover .index-name,
-a.index-hit:focus-visible .index-name {
-  color: var(--fg-strong);
-}
-
-a.index-hit:focus-visible {
-  outline: 2px solid var(--yellow);
-  outline-offset: 4px;
-}
-
-/* The row mark: mschf answers a linked row with a glyph appended after the name —
-   `a.link:not(.latest):hover:after { content: "↗" }`, a flex item packed after the
-   name span, so it lands on the name's last letter rather than at the row's end.
-   This is that slot carrying the corner mark instead, because the loop says the row
-   comes back where the arrow said it leaves. Their `:not(.latest)` keeps the glyph
-   off their newest row; that exception is not carried over, since the one linked row
-   here is the newest one.
-
-   The mask declarations are the shared block at the top; this only sizes the mark,
-   colours it, and answers the pointer. It is `aria-hidden` and takes no focus of its
-   own — the row is still named by its name. */
-.index-mark {
+.section--list-item > .title .images {
   display: none;
-  /* Under the cap height and on the baseline, so it reads as a glyph beside the
-     name rather than as a badge on it. Width comes from the asset's own ratio. */
-  height: 0.55em;
-  aspect-ratio: 729 / 444;
-  /* A sixth of the row's type: mschf's glyph sits flush against the name, which at
-     24px glues the loop to the last letter. */
-  margin-left: 0.16em;
-  /* The file, as with the lockup's two: the shared block above holds the repeat and
-     the size, this holds which mask. */
-  -webkit-mask-image: url("/src/rmngl-symbol.png");
-  mask-image: url("/src/rmngl-symbol.png");
-  /* The ink the name itself takes on hover: the mark is the row's other half, not a
-     second signal, so it arrives in the same white rather than in the yellow the site
-     spends on links. */
-  color: var(--fg-strong);
 }
 
-a.index-hit:hover .index-mark,
-a.index-hit:focus-visible .index-mark {
-  display: inline-block;
-  /* It arrives turning and settles, which is the mark closing rather than a
-     decoration fading in. Applied by the hover rule itself, so the swing replays
-     every time the pointer re-enters the row. */
-  animation: index-mark-return 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+.images {
+  max-width: 100%;
+  overflow: hidden;
 }
 
-@keyframes index-mark-return {
-  from {
-    transform: rotate(-45deg);
+.images .inner {
+  display: flex;
+  max-width: 100%;
+  overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+}
+
+.images .inner::-webkit-scrollbar {
+  display: none;
+}
+
+.thumb {
+  flex: 0 0 auto;
+  height: 4rem;
+  margin-right: 1rem;
+  background: var(--accent-color);
+}
+
+.thumb--1 {
+  width: 5rem;
+}
+
+.thumb--2 {
+  width: 4rem;
+  opacity: 0.7;
+}
+
+.thumb--3 {
+  width: 3.2rem;
+  opacity: 0.45;
+}
+
+.thumb--ascii-1 {
+  width: 4.5rem;
+  background: #000;
+}
+
+.thumb--ascii-2 {
+  width: 3.5rem;
+  background: #333;
+}
+
+@media only screen and (max-width: 1023px) {
+  :root {
+    --infos-w: 100%;
   }
 
-  to {
-    transform: rotate(0deg);
+  a.section.section--list-item,
+  div.section.section--list-item {
+    flex-wrap: wrap;
+  }
+
+  a.section.section--list-item:not(:last-child),
+  div.section.section--list-item:not(:last-child) {
+    padding-bottom: 2rem;
+  }
+
+  a.section.section--list-item > .title,
+  div.section.section--list-item > .title {
+    order: 1;
+    width: 100%;
+    max-width: 100%;
+    flex-wrap: wrap;
+    white-space: nowrap;
+    overflow: visible;
+  }
+
+  a.section.section--list-item > .infos,
+  div.section.section--list-item > .infos {
+    order: 2;
+    width: 100%;
+    flex: 0 0 100%;
+    float: none;
+  }
+
+  .section--list-item > .title .images {
+    display: block;
+    float: none;
+    width: 100%;
+    margin-bottom: 0.35rem;
+  }
+
+  .thumb {
+    height: clamp(4.5rem, 24vw, 9rem);
+    flex: 0 0 auto;
+  }
+
+  a.section.section--list-item > .title .t2,
+  div.section.section--list-item > .title .t2 {
+    width: 100%;
+    padding-top: 0.2em;
+    padding-bottom: 0.2em;
+    padding-right: 0;
   }
 }
 
-/* "not yet" row — red + diagonal hatch. No `cursor: default` needed: the row is
-   a div, not a link, so the pointer is already an arrow. */
-.index-row--tbd {
-  color: var(--red);
+/* Narrow phones: meta table + filters */
+@media only screen and (max-width: 520px) {
+  .info-row .title {
+    flex: 0 0 5.25rem;
+    width: 5.25rem;
+  }
+
+  .info-row .content {
+    white-space: normal;
+    overflow-wrap: anywhere;
+  }
+
+  section.section--filters a:not(:last-child) {
+    padding-right: 1.25em;
+  }
 }
 
-.index-row--tbd .index-hit {
+/* Desktop but squeezed (e.g. half-screen window): shrink infos column */
+@media only screen and (min-width: 1024px) and (max-width: 1180px) {
+  :root {
+    --infos-w: 13rem;
+  }
+
+  .info-row .title {
+    flex: 0 0 5.5rem;
+    width: 5.5rem;
+  }
+}
+
+/* TBD row */
+.section--list-item--tbd .t2,
+.section--list-item--tbd .info-row .content {
+  color: #b42318;
+}
+
+.section--list-item--tbd {
   background-image: repeating-linear-gradient(
     45deg,
-    rgba(240, 0, 7, 0.16) 0,
-    rgba(240, 0, 7, 0.16) 2px,
+    rgba(180, 35, 24, 0.07) 0,
+    rgba(180, 35, 24, 0.07) 2px,
     transparent 2px,
-    transparent 9px
+    transparent 10px
   );
 }
 
-/* MSCHF's "NEXT UP" plate: the unannounced run has a beginning, and its first row
-   says so. Black plate, the site's red, the gutter's 40% type, pinned to the
-   pointer and lifted clear of it — never a target (pointer-events: none), and
-   shown by src/site-index.js only while its row is hovered. */
-.index-next-up {
-  position: fixed;
-  top: 0;
-  left: 0;
-  z-index: 9999;
-  display: none;
-  padding: 0.04em 0.08em 0;
-  background: var(--bg);
-  color: var(--red);
-  font-size: 0.4em;
-  line-height: 1.2;
-  letter-spacing: 0.04em;
-  white-space: nowrap;
-  pointer-events: none;
-  transform: translateY(-150%);
+/* Unreleased ? + mosaic */
+.section--list-item--unnamed .mosaic-surface {
+  position: relative;
 }
 
-.index-next-up.is-visible {
-  display: block;
-}
-
-/* No hover to answer on a touch screen, so the plate never appears there. */
-@media (hover: none) {
-  .index-next-up.is-visible {
-    display: none;
-  }
-}
-
-/* The "?" run is read through a mosaic: mschf lays a checkerboard of the field
-   colour over exactly the rows that carry a "?" run (their `.tile-overlay`, on
-   `#126`-`#135`), so the row is a texture instead of a name. Two 45° gradients,
-   each painting opposite corners of a square tile, offset by half a tile — their
-   geometry, at their ratio: 0.4166vw against 4.5138vw of type is 0.0923em, which
-   keeps the tile at a tenth of the name at every width, their two-step vw sizes
-   included. */
-.index-row--unnamed .index-hit::after {
+.section--list-item--unnamed .mosaic-surface::after {
   --tile: 0.0923em;
   content: "";
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background-image: linear-gradient(45deg, var(--bg) 25%, transparent 0, transparent 75%, var(--bg) 0),
-    linear-gradient(45deg, var(--bg) 25%, transparent 0, transparent 75%, var(--bg) 0);
+  background-image: linear-gradient(45deg, var(--field) 25%, transparent 0, transparent 75%, var(--field) 0),
+    linear-gradient(45deg, var(--field) 25%, transparent 0, transparent 75%, var(--field) 0);
   background-position: 0 0, calc(var(--tile) / 2) calc(var(--tile) / 2);
   background-size: var(--tile) var(--tile);
 }
 
-/* Character-stepped ticker for names wider than the column */
-.index-row.is-overflowing .index-ticker {
+.section--list-item.is-overflowing .index-ticker {
   animation: index-ticker var(--ticker-duration, 9s) steps(var(--ticker-steps, 10)) infinite
     alternate;
 }
@@ -483,40 +751,17 @@ a.index-hit:focus-visible .index-mark {
   top: -200px;
   left: 0;
   width: 1ch;
+  font-family: SBM, sans-serif;
+  font-size: var(--t2-size);
   visibility: hidden;
   pointer-events: none;
 }
 
-/* ------------------------------------------------------------------
-   Wrapping branch: the name wraps instead of ticking. The character
-   marquee is a desktop affordance, and prefers-reduced-motion drops it
-   for exactly that reason — so a narrow screen and a reduced-motion
-   preference share one block instead of duplicating these three rules.
-   ------------------------------------------------------------------ */
-@media (max-width: 720px), (prefers-reduced-motion: reduce) {
-  .index-row.is-overflowing .index-ticker {
-    animation: none;
-  }
-
-  .index-name {
-    overflow: visible;
-    white-space: normal;
-    overflow-wrap: anywhere;
-  }
-
-  .index-ticker {
-    display: inline;
-  }
-
-  /* The "?" row is a placeholder, not a name, so it keeps the desktop shape at
-     every width: one run, cut by the column. Wrapping a run of identical glyphs
-     would only leave a line carrying a single "?", and since the run is wider
-     than the column here, the clip has to come back with the nowrap. */
-  .index-row--unnamed .index-name {
-    overflow: hidden;
-    white-space: nowrap;
-    overflow-wrap: normal;
-  }
+/* All widths: long titles tick instead of wrapping (MSCHF-style). */
+.section--list-item--unnamed .index-name,
+.section--list-item:not(.section--list-item--unnamed) .index-name {
+  overflow: hidden;
+  white-space: nowrap;
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -524,9 +769,13 @@ a.index-hit:focus-visible .index-mark {
     scroll-behavior: auto;
   }
 
-  /* The row mark still answers the pointer — it only loses the swing. */
-  a.index-hit:hover .index-mark,
-  a.index-hit:focus-visible .index-mark {
+  .section--list-item.is-overflowing .index-ticker {
     animation: none;
+  }
+
+  .index-name {
+    overflow: visible;
+    white-space: normal;
+    overflow-wrap: anywhere;
   }
 }

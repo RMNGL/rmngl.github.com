@@ -1,18 +1,14 @@
-import { initAsciiBackdrop } from "./ascii-backdrop.js";
-import { initIndexTickers, initNextUpPlate } from "./site-index.js";
-
-const backdrop = document.getElementById("ascii-backdrop");
+import { initIndexTickers } from "./site-index.js";
+import { initSearch } from "./site-search.js";
+import { initContentFilters } from "./site-filters.js";
+import "./site-nav.js";
 
 const cleanups = [];
 
-if (backdrop instanceof HTMLCanvasElement) {
-  cleanups.push(initAsciiBackdrop(backdrop));
-}
-
 cleanups.push(initIndexTickers());
-cleanups.push(initNextUpPlate());
+cleanups.push(initSearch());
+cleanups.push(initContentFilters());
 
 window.addEventListener("pagehide", () => {
   cleanups.forEach((fn) => fn());
 });
-

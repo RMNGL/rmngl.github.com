@@ -1,5 +1,5 @@
 /**
- * Service-index rows: mschf.com-style character-stepped marquee.
+ * Release-index rows: character-stepped marquee when a title overflows.
  * When a row name is wider than its column, translate it by whole characters
  * (steps()) and back again — the "typewriter" tick that gives the index its
  * deadpan motion. Rows that fit stay completely still.
@@ -9,7 +9,7 @@ const SECONDS_PER_STEP = 0.35;
 
 /** @returns {() => void} dispose */
 export function initIndexTickers() {
-  const rows = Array.from(document.querySelectorAll(".index-row[data-ticker]"));
+  const rows = Array.from(document.querySelectorAll("[data-ticker]"));
   if (rows.length === 0) return () => {};
 
   const reduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -37,11 +37,13 @@ export function initIndexTickers() {
 
       if (reduced) return;
 
-      const styles = getComputedStyle(ticker);
+      const t2 = row.querySelector(".t2");
+      const ref = t2 ?? ticker;
+      const styles = getComputedStyle(ref);
       ruler.style.fontFamily = styles.fontFamily;
       ruler.style.fontSize = styles.fontSize;
       ruler.style.fontWeight = styles.fontWeight;
-      ruler.style.letterSpacing = "normal";
+      ruler.style.letterSpacing = styles.letterSpacing;
       const ch = ruler.getBoundingClientRect().width || 8;
 
       const overflow = ticker.offsetWidth - name.clientWidth;
@@ -72,43 +74,5 @@ export function initIndexTickers() {
     window.removeEventListener("resize", schedule);
     if (raf) cancelAnimationFrame(raf);
     ruler.remove();
-  };
-}
-
-/**
- * The "Next up" plate on the first unannounced row: MSCHF's way of saying the
- * run has a beginning. The plate is in the markup, pinned to the pointer and
- * lifted clear of it; this only shows and hides it, so a row with no plate costs
- * nothing. The rows themselves hold no link, which is why the plate — not a hover
- * colour — is the one thing on them that answers to the pointer.
- * @returns {() => void} dispose
- */
-export function initNextUpPlate() {
-  const plate = document.querySelector(".index-next-up");
-  const row = plate?.closest(".index-row");
-  if (!plate || !row) return () => {};
-
-  const place = (event) => {
-    plate.style.left = `${event.clientX}px`;
-    plate.style.top = `${event.clientY}px`;
-  };
-
-  const show = (event) => {
-    place(event);
-    plate.classList.add("is-visible");
-  };
-
-  const hide = () => {
-    plate.classList.remove("is-visible");
-  };
-
-  row.addEventListener("pointerenter", show);
-  row.addEventListener("pointermove", place);
-  row.addEventListener("pointerleave", hide);
-
-  return () => {
-    row.removeEventListener("pointerenter", show);
-    row.removeEventListener("pointermove", place);
-    row.removeEventListener("pointerleave", hide);
   };
 }

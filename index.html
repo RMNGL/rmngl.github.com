@@ -1,192 +1,464 @@
 <!doctype html>
-<html lang="ko">
+<html lang="ko" class="no-js">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta
-      name="description"
-      content="RMNGL — Remingle"
-    />
+    <meta name="description" content="RMNGL — Remingle" />
     <title>Remingle (RMNGL)</title>
-    <!-- The tab icon is the corner mark: the loop, white on the field's black, so
-         it reads in a light tab strip and a dark one. The mask asset is the source;
-         these two are drawn from it. -->
     <link rel="icon" href="/src/favicon.png" sizes="32x32" type="image/png" />
     <link rel="apple-touch-icon" href="/src/apple-touch-icon.png" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=Archivo+Black&family=JetBrains+Mono:wght@400;600&family=UnifrakturMaguntia&display=swap"
-      rel="stylesheet"
-    />
     <link rel="stylesheet" href="/src/style.css" />
   </head>
-  <body>
-    <a class="skip-link" href="#services">Skip to content</a>
-
-    <canvas id="ascii-backdrop" class="ascii-backdrop" aria-hidden="true"></canvas>
-    <div class="scrim" aria-hidden="true"></div>
-    <div class="grain" aria-hidden="true"></div>
-    <div class="scanlines" aria-hidden="true"></div>
-
-    <header class="site-header">
-      <!-- Wordmark lockup: the drawn word, then the mark that closes it. The word
-           is the link, so its accessible name is exactly "RMNGL" — the letterforms
-           are a mask now, not text, so the mask wears that label itself. -->
-      <a class="logo" href="/">
-        <span class="logo__word" role="img" aria-label="RMNGL"></span>
-      </a>
-      <nav class="site-nav mono" aria-label="Primary">
-        <a href="#services">services</a>
-        <a href="#contact">contact</a>
-      </nav>
-      <!-- Corner mark: the reconnection loop — the wordmark's meaning drawn, one
-           line that closes on itself, because "remingle" is two things sharing a
-           region. Decorative — the wordmark carries the link. -->
-      <span class="logo-symbol" aria-hidden="true"></span>
-    </header>
+  <body page-type="home">
+    <a class="skip-link" href="#releases">Skip to content</a>
 
     <main>
-      <section id="services" class="index-zone" aria-label="Services">
-        <!-- Page h1 kept for the outline; the ASCII backdrop carries the wordmark. -->
-        <h1 class="visually-hidden">RMNGL</h1>
+      <header id="site-header">
+        <a href="/" id="site-title">
+          <h1>Remingle (RMNGL)</h1>
+          <span class="logo__word" role="img" aria-label="RMNGL"></span>
+        </a>
+        <a href="#" class="tab menu" id="menu-toggle" aria-expanded="false"
+          ><span class="check">[<span class="accent">&#10004;</span>]&nbsp;&nbsp;</span>Menu</a
+        >
+        <a href="/" class="tab active" data-nav="content"
+          ><span class="check">[<span class="accent">&#10004;</span>]&nbsp;&nbsp;</span>Content type</a
+        >
+        <a href="#search" class="tab" data-nav="search"
+          ><span class="check">[<span class="accent">&#10004;</span>]&nbsp;&nbsp;</span>Search</a
+        >
+        <a href="/about.html" class="tab"
+          ><span class="check">[<span class="accent">&#10004;</span>]&nbsp;&nbsp;</span>About</a
+        >
+      </header>
 
-        <ol class="index-list">
-          <!-- #1 is the one row that leaves the site, so it opens in a new tab and
-               the hidden label says so. The label sits inside .index-name, which
-               is its containing block — as a third child of .index-hit it would
-               become a third grid item. The row mark lives in there too, after the
-               name: mschf answers a linked row with a "↗" appended on hover, and
-               this is that slot carrying the loop instead. -->
-          <li class="index-row" data-ticker>
-            <a class="index-hit" href="https://blog.monoclers.com" target="_blank" rel="noopener">
-              <span class="index-left" aria-hidden="true">#<br />1</span>
-              <span class="index-name"
-                ><span class="index-ticker">Monoclers Blog</span
-                ><span class="index-mark" aria-hidden="true"></span
-                ><span class="visually-hidden">opens in a new tab</span></span
+      <div class="overlay" id="menu-overlay" hidden></div>
+
+      <div id="container">
+        <div id="page-content" page-type="home">
+          <section id="search-panel" class="section contained" hidden>
+            <form id="search" action="/" role="search" method="get">
+              <input type="search" name="q" placeholder="Search…" autocomplete="off" aria-label="Search releases" />
+              <input type="submit" value="ok" />
+            </form>
+            <p id="search-hint" class="search-hint" hidden>
+              Type a release name, # number, or content type to see results.
+            </p>
+            <p id="search-empty" class="search-empty" hidden>No releases match this query.</p>
+          </section>
+
+          <div id="filters" class="row">
+            <section class="section section--filters" aria-label="Filters">
+              <a href="#releases" data-filter="Product"
+                ><span class="check">[<span class="accent">&#10004;</span>]&nbsp;&nbsp;</span>Product</a
               >
+              <a href="#releases" data-filter="Campaign"
+                ><span class="check">[<span class="accent">&#10004;</span>]&nbsp;&nbsp;</span>Campaign</a
+              >
+              <a href="#releases" data-filter="Press"
+                ><span class="check">[<span class="accent">&#10004;</span>]&nbsp;&nbsp;</span>Press</a
+              >
+              <a href="#releases" data-filter="Event"
+                ><span class="check">[<span class="accent">&#10004;</span>]&nbsp;&nbsp;</span>Event</a
+              >
+              <a href="#releases" data-filter="Research"
+                ><span class="check">[<span class="accent">&#10004;</span>]&nbsp;&nbsp;</span>Research</a
+              >
+              <a href="#releases" data-filter=".jpg"
+                ><span class="check">[<span class="accent">&#10004;</span>]&nbsp;&nbsp;</span>.jpg</a
+              >
+              <a href="#releases" data-filter=".png"
+                ><span class="check">[<span class="accent">&#10004;</span>]&nbsp;&nbsp;</span>.png</a
+              >
+              <a href="#releases" data-filter=".jpeg"
+                ><span class="check">[<span class="accent">&#10004;</span>]&nbsp;&nbsp;</span>.jpeg</a
+              >
+              <a href="#releases" data-filter=".mp4"
+                ><span class="check">[<span class="accent">&#10004;</span>]&nbsp;&nbsp;</span>.mp4</a
+              >
+            </section>
+          </div>
+
+          <section class="section section--list-items" id="releases" aria-label="Releases">
+            <a
+              class="section section--list-item"
+              href="https://blog.monoclers.com"
+              target="_blank"
+              rel="noopener"
+              data-ticker
+            >
+              <div class="infos">
+                <div class="info-row">
+                  <div class="title">Release</div>
+                  <div class="content">#1</div>
+                </div>
+                <div class="info-row">
+                  <div class="title">Content type</div>
+                  <div class="content">Product</div>
+                </div>
+                <div class="info-row">
+                  <div class="title">Platform</div>
+                  <div class="content">Web</div>
+                </div>
+                <div class="info-row">
+                  <div class="title">Year</div>
+                  <div class="content">2025</div>
+                </div>
+              </div>
+              <div class="title">
+                <div class="images" aria-hidden="true">
+                  <div class="inner">
+                    <div class="thumb thumb--1"></div>
+                    <div class="thumb thumb--2"></div>
+                    <div class="thumb thumb--3"></div>
+                  </div>
+                </div>
+                <div class="t2">
+                  <span class="index-name"
+                    ><span class="index-ticker">Monoclers blog</span
+                    ><span class="visually-hidden">opens in a new tab</span></span
+                  >
+                </div>
+              </div>
             </a>
-          </li>
-          <li class="index-row" data-ticker>
-            <a class="index-hit" href="https://ascii.artwoc.com" target="_blank" rel="noopener">
-              <span class="index-left" aria-hidden="true">#<br />2</span>
-              <span class="index-name"
-                ><span class="index-ticker">ascii art</span
-                ><span class="index-mark" aria-hidden="true"></span
-                ><span class="visually-hidden">opens in a new tab</span></span
-              >
+
+            <a
+              class="section section--list-item"
+              href="https://ascii.artwoc.com"
+              target="_blank"
+              rel="noopener"
+              data-ticker
+            >
+              <div class="infos">
+                <div class="info-row">
+                  <div class="title">Release</div>
+                  <div class="content">#2</div>
+                </div>
+                <div class="info-row">
+                  <div class="title">Content type</div>
+                  <div class="content">Product</div>
+                </div>
+                <div class="info-row">
+                  <div class="title">Platform</div>
+                  <div class="content">Web</div>
+                </div>
+                <div class="info-row">
+                  <div class="title">Year</div>
+                  <div class="content">2026</div>
+                </div>
+              </div>
+              <div class="title">
+                <div class="images" aria-hidden="true">
+                  <div class="inner">
+                    <div class="thumb thumb--ascii-1"></div>
+                    <div class="thumb thumb--ascii-2"></div>
+                  </div>
+                </div>
+                <div class="t2">
+                  <span class="index-name"
+                    ><span class="index-ticker">Ascii art</span
+                    ><span class="visually-hidden">opens in a new tab</span></span
+                  >
+                </div>
+              </div>
             </a>
-          </li>
-          <li class="index-row index-row--tbd" data-ticker>
-            <div class="index-hit">
-              <span class="index-left" aria-hidden="true">#<br />N</span>
-              <span class="index-name"
-                ><span class="index-ticker">Next thing</span
-                ><span class="visually-hidden"> — tbd</span></span
-              >
+
+            <div class="section section--list-item section--list-item--tbd" data-ticker>
+              <div class="infos">
+                <div class="info-row">
+                  <div class="title">Release</div>
+                  <div class="content">#N</div>
+                </div>
+                <div class="info-row">
+                  <div class="title">Content type</div>
+                  <div class="content">Release</div>
+                </div>
+                <div class="info-row">
+                  <div class="title">Platform</div>
+                  <div class="content">In progress</div>
+                </div>
+                <div class="info-row">
+                  <div class="title">Year</div>
+                  <div class="content">2026</div>
+                </div>
+              </div>
+              <div class="title">
+                <div class="t2">
+                  <span class="index-name"><span class="index-ticker">Next thing</span></span>
+                </div>
+              </div>
             </div>
-          </li>
-          <li class="index-row index-row--descender" id="contact" data-ticker>
-            <a class="index-hit" href="mailto:hello@rmngl.com">
-              <span class="index-left index-left--mark" aria-hidden="true">,,,</span>
-              <span class="index-name index-name--mark"
-                ><span class="index-ticker">hello@rmngl.com</span></span
-              >
+
+            <a class="section section--list-item" id="contact" href="mailto:hello@rmngl.com" data-ticker>
+              <div class="infos">
+                <div class="info-row">
+                  <div class="title">Release</div>
+                  <div class="content">,,,</div>
+                </div>
+                <div class="info-row">
+                  <div class="title">Content type</div>
+                  <div class="content">Contact</div>
+                </div>
+                <div class="info-row">
+                  <div class="title">Platform</div>
+                  <div class="content">Direct</div>
+                </div>
+                <div class="info-row">
+                  <div class="title">Year</div>
+                  <div class="content">2026</div>
+                </div>
+              </div>
+              <div class="title">
+                <div class="t2">
+                  <span class="index-name index-name--mark"
+                    ><span class="index-ticker">hello@rmngl.com</span></span
+                  >
+                </div>
+              </div>
             </a>
-          </li>
-          <!-- mschf's notation for a service that has not opened: the number is
-               real, the name is not. Each run is long enough to be cut by its
-               column, and because every glyph is identical the character ticker
-               steps them invisibly — the rows read as still. No link, for the
-               same reason #2 holds none. -->
-          <li class="index-row index-row--unnamed" data-ticker>
-            <div class="index-hit">
-              <span class="index-left" aria-hidden="true">#<br />3</span>
-              <span class="index-name"
-                ><span class="index-ticker" aria-hidden="true"
-                  >????????????????????????????????</span
-                ><span class="visually-hidden">Unannounced</span></span
-              >
-              <!-- MSCHF's "NEXT UP": the run's first row is the next one to open.
-                   The plate follows the pointer and is never a target. It lives
-                   inside .index-hit, which gives it the row's type size (40% of it,
-                   the gutter's size) and its uppercase. -->
-              <span class="index-next-up" aria-hidden="true">Next up</span>
+
+            <div class="section section--list-item section--list-item--unnamed" data-ticker>
+              <div class="infos">
+                <div class="info-row">
+                  <div class="title">Release</div>
+                  <div class="content">#3</div>
+                </div>
+                <div class="info-row">
+                  <div class="title">Content type</div>
+                  <div class="content">Unreleased</div>
+                </div>
+                <div class="info-row">
+                  <div class="title">Platform</div>
+                  <div class="content">—</div>
+                </div>
+                <div class="info-row">
+                  <div class="title">Year</div>
+                  <div class="content">—</div>
+                </div>
+              </div>
+              <div class="title">
+                <div class="t2 mosaic-surface">
+                  <span class="index-name"
+                    ><span class="index-ticker" aria-hidden="true"
+                      >????????????????????????????????</span
+                    ><span class="visually-hidden">Unannounced</span></span
+                  >
+                </div>
+              </div>
             </div>
-          </li>
-          <li class="index-row index-row--unnamed" data-ticker>
-            <div class="index-hit">
-              <span class="index-left" aria-hidden="true">#<br />4</span>
-              <span class="index-name"
-                ><span class="index-ticker" aria-hidden="true"
-                  >????????????????????????????????</span
-                ><span class="visually-hidden">Unannounced</span></span
-              >
+
+            <div class="section section--list-item section--list-item--unnamed" data-ticker>
+              <div class="infos">
+                <div class="info-row">
+                  <div class="title">Release</div>
+                  <div class="content">#4</div>
+                </div>
+                <div class="info-row">
+                  <div class="title">Content type</div>
+                  <div class="content">Unreleased</div>
+                </div>
+                <div class="info-row">
+                  <div class="title">Platform</div>
+                  <div class="content">—</div>
+                </div>
+                <div class="info-row">
+                  <div class="title">Year</div>
+                  <div class="content">—</div>
+                </div>
+              </div>
+              <div class="title">
+                <div class="t2 mosaic-surface">
+                  <span class="index-name"
+                    ><span class="index-ticker" aria-hidden="true"
+                      >????????????????????????????????</span
+                    ><span class="visually-hidden">Unannounced</span></span
+                  >
+                </div>
+              </div>
             </div>
-          </li>
-          <li class="index-row index-row--unnamed" data-ticker>
-            <div class="index-hit">
-              <span class="index-left" aria-hidden="true">#<br />5</span>
-              <span class="index-name"
-                ><span class="index-ticker" aria-hidden="true"
-                  >????????????????????????????????</span
-                ><span class="visually-hidden">Unannounced</span></span
-              >
+
+            <div class="section section--list-item section--list-item--unnamed" data-ticker>
+              <div class="infos">
+                <div class="info-row">
+                  <div class="title">Release</div>
+                  <div class="content">#5</div>
+                </div>
+                <div class="info-row">
+                  <div class="title">Content type</div>
+                  <div class="content">Unreleased</div>
+                </div>
+                <div class="info-row">
+                  <div class="title">Platform</div>
+                  <div class="content">—</div>
+                </div>
+                <div class="info-row">
+                  <div class="title">Year</div>
+                  <div class="content">—</div>
+                </div>
+              </div>
+              <div class="title">
+                <div class="t2 mosaic-surface">
+                  <span class="index-name"
+                    ><span class="index-ticker" aria-hidden="true"
+                      >????????????????????????????????</span
+                    ><span class="visually-hidden">Unannounced</span></span
+                  >
+                </div>
+              </div>
             </div>
-          </li>
-          <li class="index-row index-row--unnamed" data-ticker>
-            <div class="index-hit">
-              <span class="index-left" aria-hidden="true">#<br />6</span>
-              <span class="index-name"
-                ><span class="index-ticker" aria-hidden="true"
-                  >????????????????????????????????</span
-                ><span class="visually-hidden">Unannounced</span></span
-              >
+
+            <div class="section section--list-item section--list-item--unnamed" data-ticker>
+              <div class="infos">
+                <div class="info-row">
+                  <div class="title">Release</div>
+                  <div class="content">#6</div>
+                </div>
+                <div class="info-row">
+                  <div class="title">Content type</div>
+                  <div class="content">Unreleased</div>
+                </div>
+                <div class="info-row">
+                  <div class="title">Platform</div>
+                  <div class="content">—</div>
+                </div>
+                <div class="info-row">
+                  <div class="title">Year</div>
+                  <div class="content">—</div>
+                </div>
+              </div>
+              <div class="title">
+                <div class="t2 mosaic-surface">
+                  <span class="index-name"
+                    ><span class="index-ticker" aria-hidden="true"
+                      >????????????????????????????????</span
+                    ><span class="visually-hidden">Unannounced</span></span
+                  >
+                </div>
+              </div>
             </div>
-          </li>
-          <li class="index-row index-row--unnamed" data-ticker>
-            <div class="index-hit">
-              <span class="index-left" aria-hidden="true">#<br />7</span>
-              <span class="index-name"
-                ><span class="index-ticker" aria-hidden="true"
-                  >????????????????????????????????</span
-                ><span class="visually-hidden">Unannounced</span></span
-              >
+
+            <div class="section section--list-item section--list-item--unnamed" data-ticker>
+              <div class="infos">
+                <div class="info-row">
+                  <div class="title">Release</div>
+                  <div class="content">#7</div>
+                </div>
+                <div class="info-row">
+                  <div class="title">Content type</div>
+                  <div class="content">Unreleased</div>
+                </div>
+                <div class="info-row">
+                  <div class="title">Platform</div>
+                  <div class="content">—</div>
+                </div>
+                <div class="info-row">
+                  <div class="title">Year</div>
+                  <div class="content">—</div>
+                </div>
+              </div>
+              <div class="title">
+                <div class="t2 mosaic-surface">
+                  <span class="index-name"
+                    ><span class="index-ticker" aria-hidden="true"
+                      >????????????????????????????????</span
+                    ><span class="visually-hidden">Unannounced</span></span
+                  >
+                </div>
+              </div>
             </div>
-          </li>
-          <li class="index-row index-row--unnamed" data-ticker>
-            <div class="index-hit">
-              <span class="index-left" aria-hidden="true">#<br />8</span>
-              <span class="index-name"
-                ><span class="index-ticker" aria-hidden="true"
-                  >????????????????????????????????</span
-                ><span class="visually-hidden">Unannounced</span></span
-              >
+
+            <div class="section section--list-item section--list-item--unnamed" data-ticker>
+              <div class="infos">
+                <div class="info-row">
+                  <div class="title">Release</div>
+                  <div class="content">#8</div>
+                </div>
+                <div class="info-row">
+                  <div class="title">Content type</div>
+                  <div class="content">Unreleased</div>
+                </div>
+                <div class="info-row">
+                  <div class="title">Platform</div>
+                  <div class="content">—</div>
+                </div>
+                <div class="info-row">
+                  <div class="title">Year</div>
+                  <div class="content">—</div>
+                </div>
+              </div>
+              <div class="title">
+                <div class="t2 mosaic-surface">
+                  <span class="index-name"
+                    ><span class="index-ticker" aria-hidden="true"
+                      >????????????????????????????????</span
+                    ><span class="visually-hidden">Unannounced</span></span
+                  >
+                </div>
+              </div>
             </div>
-          </li>
-          <li class="index-row index-row--unnamed" data-ticker>
-            <div class="index-hit">
-              <span class="index-left" aria-hidden="true">#<br />9</span>
-              <span class="index-name"
-                ><span class="index-ticker" aria-hidden="true"
-                  >????????????????????????????????</span
-                ><span class="visually-hidden">Unannounced</span></span
-              >
+
+            <div class="section section--list-item section--list-item--unnamed" data-ticker>
+              <div class="infos">
+                <div class="info-row">
+                  <div class="title">Release</div>
+                  <div class="content">#9</div>
+                </div>
+                <div class="info-row">
+                  <div class="title">Content type</div>
+                  <div class="content">Unreleased</div>
+                </div>
+                <div class="info-row">
+                  <div class="title">Platform</div>
+                  <div class="content">—</div>
+                </div>
+                <div class="info-row">
+                  <div class="title">Year</div>
+                  <div class="content">—</div>
+                </div>
+              </div>
+              <div class="title">
+                <div class="t2 mosaic-surface">
+                  <span class="index-name"
+                    ><span class="index-ticker" aria-hidden="true"
+                      >????????????????????????????????</span
+                    ><span class="visually-hidden">Unannounced</span></span
+                  >
+                </div>
+              </div>
             </div>
-          </li>
-          <li class="index-row index-row--unnamed" data-ticker>
-            <div class="index-hit">
-              <span class="index-left" aria-hidden="true">#<br />10</span>
-              <span class="index-name"
-                ><span class="index-ticker" aria-hidden="true"
-                  >????????????????????????????????</span
-                ><span class="visually-hidden">Unannounced</span></span
-              >
+
+            <div class="section section--list-item section--list-item--unnamed" data-ticker>
+              <div class="infos">
+                <div class="info-row">
+                  <div class="title">Release</div>
+                  <div class="content">#10</div>
+                </div>
+                <div class="info-row">
+                  <div class="title">Content type</div>
+                  <div class="content">Unreleased</div>
+                </div>
+                <div class="info-row">
+                  <div class="title">Platform</div>
+                  <div class="content">—</div>
+                </div>
+                <div class="info-row">
+                  <div class="title">Year</div>
+                  <div class="content">—</div>
+                </div>
+              </div>
+              <div class="title">
+                <div class="t2 mosaic-surface">
+                  <span class="index-name"
+                    ><span class="index-ticker" aria-hidden="true"
+                      >????????????????????????????????</span
+                    ><span class="visually-hidden">Unannounced</span></span
+                  >
+                </div>
+              </div>
             </div>
-          </li>
-        </ol>
-      </section>
+          </section>
+        </div>
+      </div>
     </main>
 
     <script type="module" src="/src/main.js"></script>
