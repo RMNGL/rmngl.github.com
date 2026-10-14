@@ -173,12 +173,15 @@ main::after {
   hyphens: auto;
 }
 
-.about-infos .content a {
+.about-infos .content a,
+.about-copy a {
   color: var(--accent-color);
 }
 
 .about-infos .content a:hover,
-.about-infos .content a:focus-visible {
+.about-infos .content a:focus-visible,
+.about-copy a:hover,
+.about-copy a:focus-visible {
   text-decoration: underline;
 }
 
