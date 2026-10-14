@@ -61,11 +61,15 @@ body {
   background: var(--field);
   color: #000;
   font-family: SBM, sans-serif;
-  font-size: 0.753rem;
   line-height: 1;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   overflow-x: clip;
+}
+
+/* VAS sets 0.753rem on body only — not html, or rem root stays at ~12px. */
+body {
+  font-size: 0.753rem;
 }
 
 html::after,
