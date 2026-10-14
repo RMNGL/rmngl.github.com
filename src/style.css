@@ -14,6 +14,8 @@
   --field: #fff;
   --header-offset: 2.95rem;
   --infos-w: 16rem;
+  /* VAS body is 0.753rem; nav + meta read small at rmngl — slight bump, titles unchanged (rem). */
+  --ui-size: 0.96rem;
   /* VAS index.css — release titles scale with html root (vw breakpoints below). */
   --t2-size: 6.0241rem;
   --t2-line: 5rem;
@@ -70,6 +72,14 @@ body {
 /* VAS sets 0.753rem on body only — not html, or rem root stays at ~12px. */
 body {
   font-size: 0.753rem;
+}
+
+#site-header > a,
+section.section--filters a,
+.about-infos,
+a.section.section--list-item > .infos,
+div.section.section--list-item > .infos {
+  font-size: var(--ui-size);
 }
 
 html::after,
@@ -257,6 +267,7 @@ main::after {
 .search-empty {
   margin: 0.75rem 0 0;
   color: #424242;
+  font-size: var(--ui-size);
 }
 
 /* Search mode: index hidden until there is a query (VAS-like focus). */
@@ -349,7 +360,7 @@ body[page-type="index.search"][data-search-has-query] #releases {
 .logo__symbol {
   display: block;
   flex-shrink: 0;
-  height: 0.95rem;
+  height: 1.22rem;
   aspect-ratio: 729 / 444;
   background-color: #000;
   -webkit-mask-image: url("/src/rmngl-symbol.png");
@@ -364,7 +375,7 @@ body[page-type="index.search"][data-search-has-query] #releases {
 
 .logo__word {
   display: block;
-  height: 0.87rem;
+  height: 1.12rem;
   aspect-ratio: 867 / 326;
   background-color: #000;
   -webkit-mask-image: url("/src/rmngl-wordmark.png");
