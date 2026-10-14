@@ -652,18 +652,6 @@ div.section.section--list-item > .title .t2 {
     float: none;
   }
 
-  .section--list-item > .title .images {
-    display: block;
-    float: none;
-    width: 100%;
-    margin-bottom: 0.35rem;
-  }
-
-  .thumb {
-    height: clamp(4.5rem, 24vw, 9rem);
-    flex: 0 0 auto;
-  }
-
   a.section.section--list-item > .title .t2,
   div.section.section--list-item > .title .t2 {
     width: 100%;
