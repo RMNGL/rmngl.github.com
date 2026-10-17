@@ -35,6 +35,10 @@ export function initIndexTickers() {
       row.style.removeProperty("--ticker-steps");
       row.style.removeProperty("--ticker-duration");
 
+      // The unnamed run is one glyph repeated: stepping it shows nothing, and a
+      // run left still keeps the column's right edge flush at every width.
+      if (row.classList.contains("section--list-item--unnamed")) return;
+
       if (reduced) return;
 
       const t2 = row.querySelector(".t2");

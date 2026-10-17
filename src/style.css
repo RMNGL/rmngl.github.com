@@ -819,4 +819,14 @@ div.section.section--list-item > .title .t2 {
     white-space: normal;
     overflow-wrap: anywhere;
   }
+
+  /* The unnamed run is notation, not a name: keep it on one clipped line so the
+     long run cannot wrap into a stack of question marks. Clipped on x only —
+     `--t2-line` is shorter than the type, so `overflow: hidden` would crop ink. */
+  .section--list-item--unnamed .index-name {
+    overflow-x: clip;
+    overflow-y: visible;
+    white-space: nowrap;
+    overflow-wrap: normal;
+  }
 }
