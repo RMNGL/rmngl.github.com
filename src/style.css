@@ -776,9 +776,12 @@ div.section.section--list-item > .title .t2 {
   background-size: var(--tile) var(--tile);
 }
 
-.section--list-item.is-overflowing .index-ticker {
-  animation: index-ticker var(--ticker-duration, 9s) steps(var(--ticker-steps, 10)) infinite
-    alternate;
+@media (prefers-reduced-motion: no-preference) {
+  .section--list-item.is-overflowing:hover .index-ticker,
+  .section--list-item.is-overflowing:focus-within .index-ticker {
+    animation: index-ticker var(--ticker-duration, 9s) steps(var(--ticker-steps, 10)) infinite
+      alternate;
+  }
 }
 
 @keyframes index-ticker {
@@ -805,6 +808,22 @@ div.section.section--list-item > .title .t2 {
   white-space: nowrap;
 }
 
+/* Touch (no hover): drag the title instead of animating it. Placed after the
+   nowrap rule so it wins at equal specificity. The ancestor .title already
+   clips vertically, so only x becomes scrollable. */
+@media (prefers-reduced-motion: no-preference) and (hover: none) {
+  .section--list-item.is-overflowing .index-name {
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: none;
+  }
+
+  .section--list-item.is-overflowing .index-name::-webkit-scrollbar {
+    display: none;
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
@@ -814,7 +833,7 @@ div.section.section--list-item > .title .t2 {
     animation: none;
   }
 
-  .index-name {
+  .section--list-item.is-overflowing .index-name {
     overflow: visible;
     white-space: normal;
     overflow-wrap: anywhere;
@@ -823,7 +842,7 @@ div.section.section--list-item > .title .t2 {
   /* The unnamed run is notation, not a name: keep it on one clipped line so the
      long run cannot wrap into a stack of question marks. Clipped on x only —
      `--t2-line` is shorter than the type, so `overflow: hidden` would crop ink. */
-  .section--list-item--unnamed .index-name {
+  .section--list-item--unnamed.is-overflowing .index-name {
     overflow-x: clip;
     overflow-y: visible;
     white-space: nowrap;
