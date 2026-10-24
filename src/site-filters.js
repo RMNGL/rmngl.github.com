@@ -3,6 +3,54 @@
  */
 
 const CONTENT_TYPE_LABEL = "Content type";
+const CHECK_MARK = "\u2714";
+
+/**
+ * Unique, non-empty, trimmed filter values in first-seen order.
+ * Each entry contributes its content type, then its extensions.
+ * @param {{ contentType: string, extensions: string[] }[]} entries
+ * @returns {string[]}
+ */
+export function orderedFilterValues(entries) {
+  const seen = new Set();
+  const values = [];
+  for (const { contentType, extensions } of entries) {
+    for (const raw of [contentType, ...extensions]) {
+      const value = raw.trim();
+      if (!value || seen.has(value)) continue;
+      seen.add(value);
+      values.push(value);
+    }
+  }
+  return values;
+}
+
+/** @param {Element} item @returns {{ contentType: string, extensions: string[] }} */
+function readFilterEntry(item) {
+  const extensions = (item.dataset.fileExt ?? "")
+    .split(",")
+    .map((s) => s.trim())
+    .filter(Boolean);
+  return { contentType: readContentType(item), extensions };
+}
+
+/** @param {string} value @returns {HTMLAnchorElement} */
+function createFilterLink(value) {
+  const link = document.createElement("a");
+  link.href = "#releases";
+  link.dataset.filter = value;
+
+  const check = document.createElement("span");
+  check.className = "check";
+  check.append("[");
+  const accent = document.createElement("span");
+  accent.className = "accent";
+  accent.textContent = CHECK_MARK;
+  check.append(accent, "]\u00a0\u00a0");
+
+  link.append(check, value);
+  return link;
+}
 
 /** @param {Element} item */
 function readContentType(item) {
@@ -63,10 +111,17 @@ export function applyContentFilters() {
 /** @returns {() => void} dispose */
 export function initContentFilters() {
   const list = document.getElementById("releases");
-  filterLinks = [...document.querySelectorAll(".section--filters a[data-filter]")];
+  const section = document.querySelector(".section--filters");
   items = list ? [...list.querySelectorAll(".section--list-item")] : [];
 
-  if (filterLinks.length === 0 || items.length === 0) return () => {};
+  if (!section || items.length === 0) return () => {};
+
+  section.replaceChildren(
+    ...orderedFilterValues(items.map(readFilterEntry)).map(createFilterLink),
+  );
+  filterLinks = [...section.querySelectorAll("a[data-filter]")];
+
+  if (filterLinks.length === 0) return () => {};
 
   const onFilterClick = (event) => {
     event.preventDefault();
